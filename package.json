@@ -17,6 +17,7 @@
   },
   "homepage": "https://github.com/efresso/title#readme",
   "dependencies": {
+    "dotenv": "^4.0.0",
     "express": "^4.14.0"
   },
   "devDependencies": {
