@@ -10,7 +10,7 @@ app.disable('x-powered-by');
 
 
 
-app.use(express.static(path.resolve('public'))
+app.use(express.static(path.resolve('public')));
 
 
 
