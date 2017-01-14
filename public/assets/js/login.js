@@ -1,5 +1,5 @@
 (function () {
   'use strict';
 
-  $('#login').hide();
+  $('#login-form').hide();
 })();
