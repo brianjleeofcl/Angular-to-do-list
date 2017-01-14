@@ -10,6 +10,7 @@
         $('button').submit(
           event.preventDefault;
 
+          const status = $()
           const reqOptions = {
             dataType: 'json',
             method: '????',
