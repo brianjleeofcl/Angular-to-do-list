@@ -1,17 +1,19 @@
 (function() {
   'use strict';
 
-  $('#signin-form').data('POST');
-  $('#login-form').data('GET');
+// need a way to figure out if this is a login or a sign up. Not working yet
 
-  let method;
-
-  $('a').on('load click', () => {
-    method = ($('#signin-form:visible') || $('#login-form:visible')).data();
-  })
+  // $('#signin-form').data('POST');
+  // $('#login-form').data('GET');
+  //
+  // let method;
+  //
+  // $(document).on('load click', () => {
+  //   method = ($('#signin-form:visible') || $('#login-form:visible')).data();
+  // })
 
   $.getJSON('/token')
-    .done((loginStatus) => {
+    .then((loginStatus) => {
       if (loginStatus) {
         window.location.href = '/list.html'
       }
@@ -27,18 +29,19 @@
             data[dom.type] = dom.value
           })
 
-          const reqOptions = {
-            dataType: 'json',
-            method,
-            url: '/users',
-            data
-          }
+          $('#signin-form').data('/users');
+          $('#login-form').data('/token');
 
-          return $.ajax(reqOptions)
+          const url = ($('#signin-form:visible') || $('#login-form:visible')).data();
+
+          console.log($('#signin-form:visible') || $('#login-form:visible'));
+          console.log(url);
+
+          return $.post(url, data, _, 'json')
         });
       }
     })
-    .done((res) => console.log(res))
+    .then((res) => console.log(res))
 
 
     .fail()
