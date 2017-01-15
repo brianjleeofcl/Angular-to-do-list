@@ -11,6 +11,12 @@ const app = express();
 
 app.disable('x-powered-by');
 
+const morgan = require('morgan');
+const bodyParser = require('body-parser');
+
+app.use(morgan('dev'));
+app.use(bodyParser.json());
+
 const token = require('./routes/token');
 const users = require('./routes/users');
 
