@@ -27,7 +27,16 @@ router.post('/users', (req, res, next) => {
   }).then((array) => {
     delete user.hashPw;
 
-    res.send(user);
+    const claim = { userId: user.id }
+    const token = jwt.sign(claim, process.env.JWT_KEY, {
+      expiresIn: '120 days'
+    })
+
+    res.cookie('token', token, {
+      httpOnly: true,
+      expiresIn: new Date(Date.now() + 3600000 * 24 * 120),
+      secure: router.get('env') === 'Production'
+    }).send(user);
   }).catch((err) => next(err));
 });
 

@@ -3,6 +3,7 @@
 
   $.getJSON('/token')
     .then((loginStatus) => {
+      console.log(loginStatus);
       if (loginStatus) {
         window.location.href = '/list.html'
       }
@@ -27,7 +28,7 @@
           }
 
           $.ajax(request)
-          .then((res) => { console.log(res) }, (error) => { console.log(error)})
+          .then((res) => { window.location.href = '/list.html' }, (error) => { console.log(error)})
         });
       }
     }, (error) => console.log('token error', error));
