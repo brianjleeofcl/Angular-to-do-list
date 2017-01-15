@@ -21,7 +21,7 @@
 
           const request = {
             contentType: 'application/json',
-            type: 'POST',
+            method: 'POST',
             dataType: 'json',
             data: JSON.stringify(data),
             url
