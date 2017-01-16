@@ -82,6 +82,8 @@
       draggable: true
     });
 
+    $('.collapsible').collapsible();
+
     $('#log-out').click((event) => {
       event.preventDefault();
 

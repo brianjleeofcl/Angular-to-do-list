@@ -21,18 +21,23 @@ const auth = function(req, res, next) {
 }
 
 router.get('/list', auth, (req, res, next) => {
-  knex('tasks').innerJoin('tasks_tags', 'tasks.id', 'tasks_tags.task_id')
-    .where('tasks.user_id', req.claim.id).then((array) => {
-      console.log(array);
-      // camelizeKeys(array).map((obj) => {
-      //   delete obj.createdAt;
-      //   delete obj.updatedAt;
-      //   obj.tags = [];
-      //
-      //   return obj;
-      // })
+  knex('tasks').select('id', 'user_id', 'task_name', 'completed_at')
+    .where('tasks.user_id', req.claim.userId).then((array) => {
+      const promises = camelizeKeys(array).map((obj) => {
+        return knex('tasks_tags')
+          .innerJoin('tags', 'tasks_tags.tag_id', 'tags.id')
+          .where('tasks_tags.task_id', obj.id)
+          .then((array) => {
+            obj.tags = camelizeKeys(array).map((tag) => tag.tagName)
+            return obj;
+          });
+      });
 
+      return Promise.all(promises);
+    }).then((data) => {
+      res.send(data);
     })
+    .catch(err=> next(err));
 });
 
 module.exports = router;
