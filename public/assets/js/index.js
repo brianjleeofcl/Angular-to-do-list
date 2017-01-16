@@ -6,12 +6,12 @@
       if (loginStatus) {
         window.location.href = '/list.html';
       } else {
-        $('.signup-form').submit((event) => {
+        $('form.signup-form').submit((event) => {
           event.preventDefault();
           const data = {};
 
-          $('input').map((_, dom) => {
-            data[dom.name] = dom.value;
+          $('.signup-form input').map((_, dom) => {
+            data[dom.id] = dom.value;
           });
 
           console.log(data);
