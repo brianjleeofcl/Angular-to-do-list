@@ -21,28 +21,18 @@ const auth = function(req, res, next) {
 }
 
 router.get('/list', auth, (req, res, next) => {
-  const data = [{
-    id: 1,
-    taskName: 'Pick up dog food',
-    completedAt: null,
-    tags: ['home', 'pet care']
-  }, {
-    id: 2,
-    taskName: 'Homework',
-    completedAt: new Date('2017-01-11 00:00:00 PST'),
-    tags: ['work']
-  }, {
-    id: 3,
-    taskName: 'Mow lawn',
-    completedAt: null,
-    tags: ['home', 'gardening']
-  }, {
-    id: 4,
-    taskName: 'Costco trip',
-    completedAt: new Date('2017-01-12 00:00:00 PST'),
-    tags: []
-  }]
-  res.send(data)
+  knex('tasks').innerJoin('tasks_tags', 'tasks.id', 'tasks_tags.task_id')
+    .where('tasks.user_id', req.claim.id).then((array) => {
+      console.log(array);
+      // camelizeKeys(array).map((obj) => {
+      //   delete obj.createdAt;
+      //   delete obj.updatedAt;
+      //   obj.tags = [];
+      //
+      //   return obj;
+      // })
+
+    })
 });
 
 module.exports = router;
