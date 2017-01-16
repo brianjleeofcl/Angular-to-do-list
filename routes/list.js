@@ -20,6 +20,11 @@ const auth = function(req, res, next) {
   })
 }
 
+router.post('/list', auth, (req, res, next) => {
+  res.send('ok!');
+
+})
+
 router.get('/list', auth, (req, res, next) => {
   knex('tasks').select('id', 'user_id', 'task_name', 'completed_at')
     .where('tasks.user_id', req.claim.userId).then((array) => {
