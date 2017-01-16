@@ -13,7 +13,7 @@
           const data = {};
 
           $('input').map((_, dom) => {
-            data[dom.name] = dom.value;
+            data[dom.id] = dom.value;
           });
 
           const request = {
@@ -21,7 +21,7 @@
             method: 'POST',
             dataType: 'json',
             data: JSON.stringify(data),
-            url: 'users/login',
+            url: '/token',
           };
 
           $.ajax(request)
