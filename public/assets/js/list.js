@@ -1,28 +1,6 @@
 (function() {
   'use strict';
 
-  const data = [{
-    id: 1,
-    name: 'Pick up dog food',
-    completedAt: null,
-    tags: ['home', 'pet care']
-  }, {
-    id: 2,
-    name: 'Homework',
-    completedAt: new Date('2017-01-11 00:00:00 PST'),
-    tags: ['work']
-  }, {
-    id: 3,
-    name: 'Mow lawn',
-    completedAt: null,
-    tags: ['home', 'gardening']
-  }, {
-    id: 4,
-    name: 'Costco trip',
-    completedAt: new Date('2017-01-12 00:00:00 PST'),
-    tags: []
-  }]
-
   const createTag = function(tagName) {
     const $tag = $('<div>').text(tagName).addClass('chip right');
     const $close = $('<i>').addClass('close material-icons').text('close');
@@ -40,10 +18,10 @@
     object.tags.reduce(($target, str) => {
       $target.append(createTag(str));
 
-      return $target
+      return $target;
     }, $li);
 
-    return $li
+    return $li;
   }
 
   const createCollection = function(array) {
@@ -51,17 +29,20 @@
     const completed = array.filter((obj) => !obj.completedAt);
 
     const $all = all.reduce(($ul, obj) => {
-      return $ul.append(createCollectionItem(obj))
+      return $ul.append(createCollectionItem(obj));
     }, $('<ul>').addClass('collection'));
 
     const $completed = completed.reduce(($ul, obj) => {
-      return $ul.append(createCollectionItem(obj, 'checked'))
+      return $ul.append(createCollectionItem(obj, 'checked'));
     }, $('<ul>').addClass('collection'));
 
     $('#all').append($all);
     $('#completed').append($completed);
   }
 
-  createCollection(data);
-
+  $.getJSON('/list').then((data) => {
+    createCollection(data);
+  }, (err) => {
+    console.log(err);
+  })
 })();
