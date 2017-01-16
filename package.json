@@ -11,7 +11,7 @@
     "type": "git",
     "url": "git+https://github.com/efresso/title.git"
   },
-  "author": "Michael Friedman <contact@michaeldavidfriedman.com>",
+  "contributors": ["Michael Friedman <contact@michaeldavidfriedman.com>","Brian Lee <brian@brianjlee.net>"],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/efresso/title/issues"
