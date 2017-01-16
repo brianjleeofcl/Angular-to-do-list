@@ -24,8 +24,8 @@ router.get('/sidenav', auth, (req, res, next) => {
   let userData;
 
   knex('users').where('id', req.claim.userId).then((array) => {
-    const { firstName, lastName, email } = camelizeKeys(array[0]);
-    userData = {firstName, lastName, email};
+    const { name, email } = camelizeKeys(array[0]);
+    userData = {name, email};
 
     return knex('tags').where('user_id', req.claim.userId)
   }).then((array) => {

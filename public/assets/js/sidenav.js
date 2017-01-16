@@ -5,10 +5,10 @@
     return $('<li>').append(fn(...rest))
   }
 
-  const $createUserView = function(firstName, lastName, email) {
+  const $createUserView = function(name, email) {
     const $outer = $('<div>').addClass('userView');
     const $inner = $('<div>').addClass('background blue-grey')
-    const $name = $('<span>').text(`${firstName} ${lastName}`)
+    const $name = $('<span>').text(name)
       .addClass('white-text name');
     const $email = $('<span>').text(email).addClass('white-text');
 
@@ -51,7 +51,7 @@
   }
 
   const $createNav = function(userData) {
-    const { firstName, lastName, email, tags } = userData
+    const { name, email, tags } = userData
     const $nav = $('<nav>');
     const $divWrap = $('<div>').addClass('nav-wrapper');
     const $ul = $('<ul>').addClass('side-nav fixed').attr('id', 'slide-out');
@@ -60,7 +60,7 @@
 
     $divWrap.append($ul, $button).appendTo($nav)
 
-    $ul.append($createLI($createUserView, firstName, lastName, email))
+    $ul.append($createLI($createUserView, name, email))
     $ul.append($createLI($createIconLink, 'All items', 'list', '/list.html'));
     $ul.append($createLI($createIconLink, 'Completed', 'done_all', '/list.html'));
     $ul.append($('<div>').addClass('divider'));
