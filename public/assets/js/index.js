@@ -4,33 +4,29 @@
   $.getJSON('/token')
     .then((loginStatus) => {
       if (loginStatus) {
-        window.location.href = '/list.html'
-      }
-      else {
-        $('form').submit((event) => {
-          event.preventDefault()
-
+        window.location.href = '/list.html';
+      } else {
+        $('.signup-form').submit((event) => {
+          event.preventDefault();
           const data = {};
 
-          $('input:visible').map((_, dom) => {
-            data[dom.name] = dom.value
-          })
+          $('input').map((_, dom) => {
+            data[dom.name] = dom.value;
+          });
 
-          const url = $('input:visible').length === 6 ? '/users' : '/token';
+          console.log(data);
 
           const request = {
             contentType: 'application/json',
             method: 'POST',
             dataType: 'json',
             data: JSON.stringify(data),
-            url
-          }
+            url: '/users',
+          };
 
           $.ajax(request)
-          .then((res) => { window.location.href = '/list.html' }, (error) => { console.log(error)})
+          .then((res) => { window.location.href = '/list.html'; }, (error) => { console.log(error); });
         });
       }
-    }, (error) => console.log('token error', error));
-
-
+    }, error => console.log('token error', error));
 })();
