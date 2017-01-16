@@ -12,8 +12,8 @@
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet">
   </head>
-  <body class="container">
-    <div id="signup-form" class="row">
+  <body class="blue">
+    <!-- <div id="signup-form" class="row">
       <form class="col s12">
         <div class="row">
           <div class="input-field col s6">
@@ -72,6 +72,65 @@
         </div>
       </div>
     </form>
+  </div> -->
+
+  <div id="signup-form" class="row">
+    <div class="col s12 z-depth-6">
+      <form class="login-form">
+        <div class="row">
+          <div class="input-field col s12 center">
+            <img src="#" alt="logo" class="responsive-img valign profile-image-login">
+            <p class="center login-form-text">Todo Application</p>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="material-icons prefix"></i>
+            <input id="first_name" type="text" class="validate">
+            <label for="first_name" class="center-align">First Name</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="material-icons prefix"></i>
+            <input id="last_name" type="text" class="validate">
+            <label for="last_name" class="center-align">Last name</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">email</i>
+            <input id="email" type="text" class="validate">
+            <label for="email" class="center-align">Email</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">lock_outline</i>
+            <input id="password" type="password" class="validate">
+            <label for="password" class="center-align">Password</label>
+          </div>
+        </div>
+        <div class="row margin">
+          <div class="input-field col s12">
+            <i class="material-icons prefix">lock</i>
+            <input id="password_verify" type="password" class="validate">
+            <label for="password_verify" class="center-align">Confirm Password</label>
+          </div>
+        </div>
+        <div class="row">
+          <div class="input-field col s12">
+            <a href="#" class="btn waves-effect waves-light col s12">Signup</a>
+          </div>
+          <div class="input-field col s12">
+            <p class="margin center medium-small sign-up">Already registered? <a href="login.html">Login</a></p>
+          </div>
+        </div>
+      </form>
+
+    </div>
   </div>
+
+
   </body>
 </html>
