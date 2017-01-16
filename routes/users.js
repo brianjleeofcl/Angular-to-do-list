@@ -12,7 +12,7 @@ const router = express.Router();
 
 router.post('/users', (req, res, next) => {
   let user;
-  const { firstName, lastName, email, password, phone } = req.body;
+  const { name, email, password, phone } = req.body;
 
   knex('users').where('email', email).then((data) => {
     if (data.length) {
@@ -21,7 +21,7 @@ router.post('/users', (req, res, next) => {
 
     return bcrypt.hash(password, 12);
   }).then((hashPw) => {
-    user = { firstName, lastName, email, hashPw, phone };
+    user = { name, email, hashPw, phone };
 
     return knex('users').insert(decamelizeKeys(user), '*');
   }).then((array) => {
