@@ -15,15 +15,27 @@
   </head>
   <body>
     <main>
-      <div id="new-item" class="">
-        Input form for new list item!
-      </div>
-      <div id="all">
-
-      </div>
-      <div id="completed">
-
-      </div>
+      <div class="container">
+          <div class="section">
+            <div class="divider"></div>
+            <div class="col s12">
+              <ul id="all" class="collection with-header">
+                  <li class="collection-header cyan">
+                      <h4 class="task-card-title">Named Task List</h4>
+                      <p id="date"></p>
+                  </li>
+                  <li class="collection-item"><input id="new-task" type="text" placeholder="Add a task"></li>
+              </ul>
+              <ul id="completed" class="collection with-header">
+                  <li class="collection-header cyan">
+                      <h4 class="task-card-title">Completed Task List</h4>
+                      <p id="date"></p>
+                  </li>
+              </ul>
+          </div>
+          </div>
+        </div>
+      </section>
     </main>
   </body>
 </html>

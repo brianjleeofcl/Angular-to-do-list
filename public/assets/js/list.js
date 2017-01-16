@@ -1,6 +1,33 @@
 (function() {
   'use strict';
 
+  const appendDate = function () {
+    const n =  new Date();
+    const y = n.getFullYear();
+    const m = n.getMonth() + 1;
+    const d = n.getDate();
+    $('#date').text(`${m}/${d}/${y}`);
+  }
+  appendDate();
+
+  const createNewTaskElement = function () {
+
+  }
+
+  $('#new-task').keyup((event) => {
+    const code = event.which;
+    const newTask = $('#new-task').val();
+    if (code === 13) {
+      const option =
+      {
+        method: 'post',
+        dataType: 'JSON',
+        url: '/list'
+      };
+      $.ajax(option).done();
+    }
+  });
+
   const createTag = function(tagName) {
     const $tag = $('<div>').text(tagName).addClass('chip right');
     const $close = $('<i>').addClass('close material-icons').text('close');

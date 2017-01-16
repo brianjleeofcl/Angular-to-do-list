@@ -45,4 +45,8 @@ router.get('/list', auth, (req, res, next) => {
   res.send(data)
 });
 
+router.post('/list', auth, (req, res, next) => {
+  res.send('ok!');
+
+})
 module.exports = router;
