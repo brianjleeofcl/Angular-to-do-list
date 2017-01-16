@@ -23,22 +23,22 @@ const auth = function(req, res, next) {
 router.get('/list', auth, (req, res, next) => {
   const data = [{
     id: 1,
-    name: 'Pick up dog food',
+    taskName: 'Pick up dog food',
     completedAt: null,
     tags: ['home', 'pet care']
   }, {
     id: 2,
-    name: 'Homework',
+    taskName: 'Homework',
     completedAt: new Date('2017-01-11 00:00:00 PST'),
     tags: ['work']
   }, {
     id: 3,
-    name: 'Mow lawn',
+    taskName: 'Mow lawn',
     completedAt: null,
     tags: ['home', 'gardening']
   }, {
     id: 4,
-    name: 'Costco trip',
+    taskName: 'Costco trip',
     completedAt: new Date('2017-01-12 00:00:00 PST'),
     tags: []
   }]

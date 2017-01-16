@@ -5,8 +5,7 @@ exports.seed = function(knex) {
     .then(function () {
       return knex('users').insert([{
         id: 1,
-        first_name: 'John',
-        last_name: 'Smith',
+        name: 'John Smith',
         email: 'contact@example.com',
         hash_pw: '$2a$12$/uBxx2hmE6arf9EyQfjHC.UWbGWNUi22iMLGrY9Kq4NCO8/KpYWdW',
         // 'password'

@@ -12,7 +12,7 @@
     const id = `item${object.id}`;
     const $li = $('<li>').addClass('collection-item');
     const $input = $('<input>').attr({ type: 'checkbox', checked, id });
-    const $label = $('<label>').attr('for', id).text(object.name);
+    const $label = $('<label>').attr('for', id).text(object.taskName);
 
     $li.append($input, $label)
     object.tags.reduce(($target, str) => {
@@ -21,12 +21,18 @@
       return $target;
     }, $li);
 
+    if (checked) {
+      const $p = $('<p>').text(`Completed: ${object.completedAt}`);
+
+      $p.appendTo($li)
+    }
+
     return $li;
   }
 
   const createCollection = function(array) {
-    const all = array.filter((obj) => Boolean(obj.completedAt));
-    const completed = array.filter((obj) => !obj.completedAt);
+    const all = array.filter((obj) => !obj.completedAt);
+    const completed = array.filter((obj) => Boolean(obj.completedAt));
 
     const $all = all.reduce(($ul, obj) => {
       return $ul.append(createCollectionItem(obj));
