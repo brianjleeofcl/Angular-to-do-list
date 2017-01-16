@@ -29,7 +29,7 @@ router.get('/sidenav', auth, (req, res, next) => {
 
     return knex('tags').where('user_id', req.claim.userId)
   }).then((array) => {
-    userData.tags = array.map((row) => camelizeKeys(row).tagName);
+    userData.tags = camelizeKeys(array).map((row) => row.tagName);
 
     res.send(userData);
   }).catch((err) => next(err))

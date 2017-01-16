@@ -21,28 +21,23 @@ const auth = function(req, res, next) {
 }
 
 router.get('/list', auth, (req, res, next) => {
-  const data = [{
-    id: 1,
-    taskName: 'Pick up dog food',
-    completedAt: null,
-    tags: ['home', 'pet care']
-  }, {
-    id: 2,
-    taskName: 'Homework',
-    completedAt: new Date('2017-01-11 00:00:00 PST'),
-    tags: ['work']
-  }, {
-    id: 3,
-    taskName: 'Mow lawn',
-    completedAt: null,
-    tags: ['home', 'gardening']
-  }, {
-    id: 4,
-    taskName: 'Costco trip',
-    completedAt: new Date('2017-01-12 00:00:00 PST'),
-    tags: []
-  }]
-  res.send(data)
+  knex('tasks').select('id', 'user_id', 'task_name', 'completed_at')
+    .where('tasks.user_id', req.claim.userId).then((array) => {
+      const promises = camelizeKeys(array).map((obj) => {
+        return knex('tasks_tags')
+          .innerJoin('tags', 'tasks_tags.tag_id', 'tags.id')
+          .where('tasks_tags.task_id', obj.id)
+          .then((array) => {
+            obj.tags = camelizeKeys(array).map((tag) => tag.tagName)
+            return obj;
+          });
+      });
+
+      return Promise.all(promises);
+    }).then((data) => {
+      res.send(data);
+    })
+    .catch(err=> next(err));
 });
 
 router.post('/list', auth, (req, res, next) => {
