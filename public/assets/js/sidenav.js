@@ -54,7 +54,7 @@
     const { firstName, lastName, email, tags } = userData
     const $nav = $('<nav>');
     const $divWrap = $('<div>').addClass('nav-wrapper');
-    const $ul = $('<ul>').addClass('side-nav').attr('id', 'slide-out');
+    const $ul = $('<ul>').addClass('side-nav fixed').attr('id', 'slide-out');
     const $button = $createIconLink('', 'menu')
       .attr('data-activates', 'slide-out').addClass('button-collapse');
 
@@ -77,7 +77,10 @@
     }
 
     $('body').prepend($createNav(data));
-    $('.button-collapse').sideNav();
+    $('.button-collapse').sideNav({
+      closeOnclick: true,
+      draggable: true
+    });
 
     $('#log-out').click((event) => {
       event.preventDefault();
