@@ -77,7 +77,10 @@
     }
 
     $('body').prepend($createNav(data));
-    $('.button-collapse').sideNav();
+    $('.button-collapse').sideNav({
+      closeOnclick: true,
+      draggable: true
+    });
 
     $('#log-out').click((event) => {
       event.preventDefault();
