@@ -2,6 +2,7 @@ module.exports = {
   extends: [
     'airbnb',
     'ryansobol/mocha',
-    'ryansobol/node'
+    'ryansobol/node',
+    'ryansobol/jquery',
   ]
 };
