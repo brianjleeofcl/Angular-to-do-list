@@ -3,6 +3,7 @@
 const knex = require('../knex');
 
 const bcrypt = require('bcrypt-as-promised');
+
 const jwt = require('jsonwebtoken');
 
 const { camelizeKeys } = require('humps');

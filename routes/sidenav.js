@@ -1,6 +1,7 @@
 'use strict';
 
 const knex = require('../knex');
+
 const jwt = require('jsonwebtoken');
 
 const { camelizeKeys, decamelizeKeys } = require('humps');
@@ -29,7 +30,8 @@ router.get('/sidenav', auth, (req, res, next) => {
     userData = { name, email };
 
     return knex('tags').where('user_id', req.claim.userId);
-  }).then((array) => {
+  })
+  .then((array) => {
     userData.tags = camelizeKeys(array).map(row => row.tagName);
 
     res.send(userData);

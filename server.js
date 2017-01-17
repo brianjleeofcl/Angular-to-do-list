@@ -7,12 +7,15 @@ if (process.env.NODE_ENV !== 'production') {
 const path = require('path');
 
 const express = require('express');
+
 const app = express();
 
 app.disable('x-powered-by');
 
 const morgan = require('morgan');
+
 const bodyParser = require('body-parser');
+
 const cookieParser = require('cookie-parser');
 
 app.use(morgan('dev'));
@@ -20,9 +23,13 @@ app.use(bodyParser.json());
 app.use(cookieParser());
 
 const token = require('./routes/token');
+
 const users = require('./routes/users');
+
 const sidenav = require('./routes/sidenav');
+
 const list = require('./routes/list');
+
 const tags = require('./routes/tags');
 
 app.use(express.static(path.resolve('public')));

@@ -1,15 +1,12 @@
-// Update with your config settings.
+'use strict'
 
 module.exports = {
-
   development: {
     client: 'pg',
-    connection: 'postgres://localhost/todo_dev'
+    connection: 'postgres://localhost/todo_dev',
   },
-
   production: {
     client: 'pg',
-    connection: process.env.DATABASE_URL
-  }
-
+    connection: process.env.DATABASE_URL,
+  },
 };

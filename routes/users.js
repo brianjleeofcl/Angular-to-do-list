@@ -3,6 +3,7 @@
 const knex = require('../knex');
 
 const bcrypt = require('bcrypt-as-promised');
+
 const jwt = require('jsonwebtoken');
 
 const { camelizeKeys, decamelizeKeys } = require('humps');
@@ -25,7 +26,8 @@ router.post('/users', (req, res, next) => {
     user = { name, email, hashPw, phone };
 
     return knex('users').insert(decamelizeKeys(user), '*');
-  }).then((array) => {
+  })
+  .then((array) => {
     delete user.hashPw;
 
     const claim = { userId: array[0].id };
@@ -38,7 +40,8 @@ router.post('/users', (req, res, next) => {
       expiresIn: new Date(Date.now() + 3600000 * 24 * 120),
       secure: router.get('env') === 'Production',
     }).send(user);
-  }).catch(err => next(err));
+  })
+  .catch(err => next(err));
 });
 
 

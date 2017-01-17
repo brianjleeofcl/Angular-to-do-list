@@ -1,6 +1,7 @@
 'use strict';
 
 const knex = require('../knex');
+
 const jwt = require('jsonwebtoken');
 
 const { camelizeKeys, decamelizeKeys } = require('humps');
