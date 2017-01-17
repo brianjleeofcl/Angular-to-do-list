@@ -11,7 +11,10 @@
     "type": "git",
     "url": "git+https://github.com/efresso/title.git"
   },
-  "contributors": ["Michael Friedman <contact@michaeldavidfriedman.com>","Brian Lee <brian@brianjlee.net>"],
+  "contributors": [
+    "Michael Friedman <contact@michaeldavidfriedman.com>",
+    "Brian Lee <brian@brianjlee.net>"
+  ],
   "license": "MIT",
   "bugs": {
     "url": "https://github.com/efresso/title/issues"
@@ -20,6 +23,7 @@
   "dependencies": {
     "bcrypt-as-promised": "^1.1.0",
     "body-parser": "^1.15.2",
+    "boom": "^4.2.0",
     "cookie-parser": "^1.4.3",
     "dotenv": "^4.0.0",
     "express": "^4.14.0",

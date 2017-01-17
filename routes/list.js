@@ -2,6 +2,8 @@
 
 const knex = require('../knex');
 
+const boom = require('boom');
+
 const jwt = require('jsonwebtoken');
 
 const { camelizeKeys, decamelizeKeys } = require('humps');
@@ -76,6 +78,35 @@ router.patch('/list', auth, (req, res, next) => {
     res.send(camelizeKeys(array[0]));
   })
   .catch(err => next(err));
+});
+
+router.delete('/list', authorize, (req, res, next) => {
+  const id = req.body.id;
+  const clause = { id: id };
+  let task;
+
+  knex('tasks')
+    .where(clause)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Task not found');
+      }
+
+      task = camelizeKeys(row);
+
+      return knex('tasks')
+        .del()
+        .where('id', task.id);
+    })
+    .then(() => {
+      delete task.id;
+
+      res.send(task);
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 module.exports = router;
