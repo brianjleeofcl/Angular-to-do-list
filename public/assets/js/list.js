@@ -111,7 +111,7 @@
   $('ul').on('click', '.closeIcon', (event) => {
     const taskItem = event.target.parentNode;
     taskItem.remove();
-    const id = $(event.target).attr('id').substr(4);
+    const id = $(event.target.parentNode).attr('id').substr(4);
     const data = JSON.stringify({ id });
     const options = {
       method: 'DELETE',
@@ -119,7 +119,7 @@
       contentType: 'application/json',
       data,
     };
-    
+
     $.ajax(options).then((data) => {
       Materialize.toast('Task removed', 1500);
     }, (error) => {console.log(error)});
