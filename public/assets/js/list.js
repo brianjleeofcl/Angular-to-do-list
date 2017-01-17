@@ -13,11 +13,10 @@
     const $li = $('<li>').addClass('collection-item');
     const $input = $('<input>').attr({ type: 'checkbox', checked, id });
     const $label = $('<label>').attr('for', id).text(object.taskName);
-    const $editButton = $('<a>').addClass('btn-floating', 'btn-small', 'waves-effect', 'waves-light', 'red');
-    const $editIcon = $('<i>').addClass('material-icons').text('insert_chart');
+    const $editIcon = $('<i>').addClass('material-icons right').text('edit');
 
 
-    $li.append($input, $label, $editButton, $editIcon);
+    $li.append($input, $label, $editIcon);
     object.tags.reduce(($target, str) => {
       $target.append(createTag(str));
 
