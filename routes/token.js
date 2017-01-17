@@ -8,15 +8,16 @@ const jwt = require('jsonwebtoken');
 const { camelizeKeys } = require('humps');
 
 const express = require('express');
+
 const router = express.Router();
 
 router.get('/token', (req, res) => {
-  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err) =>{
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err) => {
     if (err) {
       return res.send(false);
-    } else {
-      return res.send(true);
     }
+
+    return res.send(true);
   });
 });
 
@@ -29,29 +30,31 @@ router.post('/token', (req, res, next) => {
       throw new Error('not found');
     }
 
-    user = camelizeKeys(data[0])
+    user = camelizeKeys(data[0]);
 
-    return bcrypt.compare(password, user.hashPw)
+    return bcrypt.compare(password, user.hashPw);
   }).then(() => {
     delete user.hashPw;
 
-    const claim = { userId: user.id }
+    const claim = { userId: user.id };
     const token = jwt.sign(claim, process.env.JWT_KEY, {
-      expiresIn: '120 days'
-    })
+      expiresIn: '120 days',
+    });
 
     res.cookie('token', token, {
       httpOnly: true,
       expiresIn: new Date(Date.now() + 3600000 * 24 * 120),
-      secure: router.get('env') === 'Production'
+      secure: router.get('env') === 'Production',
     }).send(user);
-  }).catch(bcrypt.MISMATCH_ERROR, () => {
+  })
+  .catch(bcrypt.MISMATCH_ERROR, () => {
     throw new Error('bad password');
-  }).catch((err) => next(err))
-})
+  })
+  .catch(err => next(err));
+});
 
 router.delete('/token', (req, res, next) => {
-  res.clearCookie('token').send(false)
-})
+  res.clearCookie('token').send(false);
+});
 
 module.exports = router;

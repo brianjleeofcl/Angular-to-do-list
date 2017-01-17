@@ -6,19 +6,20 @@ const jwt = require('jsonwebtoken');
 const { camelizeKeys, decamelizeKeys } = require('humps');
 
 const express = require('express');
+
 const router = express.Router();
 
-const auth = function(req, res, next) {
+const auth = function (req, res, next) {
   jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
     if (err) {
-      return next(err)
+      return next(err);
     }
 
     req.claim = payload;
 
     next();
-  })
-}
+  });
+};
 
 router.delete('/tags', auth, (req, res, next) => {
   const { tagName, taskId } = req.body;
@@ -30,10 +31,12 @@ router.delete('/tags', auth, (req, res, next) => {
     .then((array) => {
       const id = array[0].id;
 
-      return knex('tasks_tags').where('id', id).del('*')
-    }).then((array) => {
-      res.send(array[0])
-    }).catch((err) => next(err))
-})
+      return knex('tasks_tags').where('id', id).del('*');
+    })
+    .then((array) => {
+      res.send(array[0]);
+    })
+    .catch(err => next(err));
+});
 
 module.exports = router;

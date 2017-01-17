@@ -1,7 +1,7 @@
 (function () {
   'use strict';
 
-  const createTag = function(tagName) {
+  const createTag = function (tagName) {
     const $tag = $('<div>').text(tagName).addClass('chip right');
     const $close = $('<i>').addClass('close material-icons').text('close');
 
@@ -59,22 +59,21 @@
     const taskName = $('#new-task').val();
     if (code === 13) {
       const option ={
-        contentType:'application/json',
+        contentType: 'application/json',
         method: 'POST',
         dataType: 'JSON',
         url: '/list',
         data: JSON.stringify({ taskName }),
       };
 
-      $.ajax(option).then(() => {
-        return $.getJSON('/list')
-      }).then((data) => {
-        $('#all ul.collection').remove();
-        $('#completed ul.collection').remove();
-        createCollection(data);
-      }, (err) => {
-        console.log(err);
-      });
+      $.ajax(option).then(() => $.getJSON('/list'))
+        .then((data) => {
+          $('#all ul.collection').remove();
+          $('#completed ul.collection').remove();
+          createCollection(data);
+        }, (err) => {
+          console.log(err);
+        });
     }
   });
 
@@ -86,11 +85,9 @@
       method: 'PATCH',
       url: '/list',
       contentType: 'application/json',
-      data
-    }
-    $.ajax(options).then(() => {
-      return $.getJSON('/list')
-    }).then((data) => {
+      data,
+    };
+    $.ajax(options).then(() => $.getJSON('/list')).then((data) => {
       $('#all ul.collection').remove();
       $('#completed ul.collection').remove();
       createCollection(data);
