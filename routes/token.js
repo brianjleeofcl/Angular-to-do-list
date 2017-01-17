@@ -1,3 +1,5 @@
+/* eslint-disable strict, no-unused-vars, no-mixed-operators */
+
 'use strict';
 
 const knex = require('../knex');
@@ -12,6 +14,14 @@ const express = require('express');
 
 const router = express.Router();
 
+const boom = require('boom');
+
+const ev = require('express-validation');
+
+const validations = require('../validations/users');
+
+const app = express();
+
 router.get('/token', (req, res) => {
   jwt.verify(req.cookies.token, process.env.JWT_KEY, (err) => {
     if (err) {
@@ -22,10 +32,17 @@ router.get('/token', (req, res) => {
   });
 });
 
-router.post('/token', (req, res, next) => {
+router.post('/token', ev(validations.post), (req, res, next) => {
   let user;
   const { email, password } = req.body;
 
+  if (!email || email.trim() === '') {
+    return next(boom.create(400, 'Email must not be blank'));
+  }
+
+  if (!password || password.length < 8) {
+    return next(boom.create(400, 'Passwords must be at least 8 characters long'));
+  }
   knex('users').where('email', email).then((data) => {
     if (!data.length) {
       throw new Error('not found');
@@ -52,6 +69,22 @@ router.post('/token', (req, res, next) => {
     throw new Error('bad password');
   })
   .catch(err => next(err));
+});
+
+app.use((err, _req, res, _next) => {
+  if (err.status) {
+    return res.status(err.status).send(err);
+  }
+
+  if (err.output && err.output.statusCode) {
+    return res
+      .status(err.output.statusCode)
+      .set('Content-Type', 'text/plain')
+      .send(err.message);
+  }
+
+  console.error(err.stack);
+  res.sendStatus(500);
 });
 
 router.delete('/token', (req, res, next) => {

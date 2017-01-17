@@ -1,3 +1,5 @@
+/* eslint-disable strict */
+
 'use strict';
 
 exports.seed = knex => knex('users').del()

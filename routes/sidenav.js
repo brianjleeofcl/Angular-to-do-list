@@ -1,3 +1,5 @@
+/* eslint-disable strict, no-unused-vars, func-names, consistent-return, no-param-reassign */
+
 'use strict';
 
 const knex = require('../knex');

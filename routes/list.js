@@ -1,3 +1,5 @@
+/* eslint-disable strict, func-names, consistent-return, no-param-reassign, no-shadow */
+
 'use strict';
 
 const knex = require('../knex');
@@ -82,7 +84,7 @@ router.patch('/list', auth, (req, res, next) => {
 
 router.delete('/list', auth, (req, res, next) => {
   const id = req.body.id;
-  const clause = { id: id };
+  const clause = { id };
   let task;
 
   knex('tasks')
