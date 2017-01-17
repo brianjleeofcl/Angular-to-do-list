@@ -46,7 +46,17 @@ router.get('/list', auth, (req, res, next) => {
 });
 
 router.post('/list', auth, (req, res, next) => {
-  res.send('ok!');
+  const { taskName } = req.body
+  const task = { taskName, userId: req.claim.userId }
+  knex('tasks')
+    .insert(decamelizeKeys(task), '*')
+    .then((rows) => {
+      const newTask = camelizeKeys(rows[0]);
 
+      res.send(newTask);
+    })
+    .catch((err) => {
+      next(err);
+    });
 })
 module.exports = router;
