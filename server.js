@@ -23,6 +23,7 @@ const token = require('./routes/token');
 const users = require('./routes/users');
 const sidenav = require('./routes/sidenav');
 const list = require('./routes/list');
+const tags = require('./routes/tags');
 
 app.use(express.static(path.resolve('public')));
 
@@ -32,6 +33,7 @@ app.use(users);
 
 app.use(sidenav);
 app.use(list);
+app.use(tags);
 
 const port = process.env.PORT || 8000;
 
