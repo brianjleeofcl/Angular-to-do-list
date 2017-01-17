@@ -1,6 +1,9 @@
+// eslint-disable-next-line wrap-iife, func-names,
 (function () {
+  // eslint-disable-next-line lines-around-directive, strict
   'use strict';
 
+  // eslint-disable-next-line func-names
   const createTag = function (tagName) {
     const $tag = $('<div>').text(tagName).addClass('chip right');
     const $close = $('<i>').addClass('close material-icons').text('close');
@@ -8,13 +11,18 @@
     return $tag.append($close);
   };
 
+  // eslint-disable-next-line func-names
   const createCollectionItem = function (object, checked) {
     const id = `item${object.id}`;
     const $li = $('<li>').addClass('collection-item');
     const $input = $('<input>').attr({ type: 'checkbox', checked, id });
     const $label = $('<label>').attr('for', id).text(object.taskName);
+    const $editIcon = $('<i>')
+      .addClass('material-icons right editButton').text('edit');
+    const $closeIcon = $('<i>')
+      .addClass('material-icons right closeIcon').text('close')
 
-    $li.append($input, $label);
+    $li.append($input, $label, $editIcon, $closeIcon);
     object.tags.reduce(($target, str) => {
       $target.append(createTag(str));
 
@@ -30,17 +38,16 @@
     return $li;
   };
 
+  // eslint-disable-next-line func-names
   const createCollection = function (array) {
     const all = array.filter(obj => !obj.completedAt);
     const completed = array.filter(obj => Boolean(obj.completedAt));
 
-    const $all = all.reduce(($ul, obj) => {
-      return $ul.append(createCollectionItem(obj));
-    }, $('<ul>').addClass('collection'));
+    const $all = all.reduce(($ul, obj) => $ul.append(createCollectionItem(obj)),
+    $('<ul>').addClass('collection'));
 
-    const $completed = completed.reduce(($ul, obj) => {
-      return $ul.append(createCollectionItem(obj, 'checked'));
-    }, $('<ul>').addClass('collection'));
+    const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')),
+    $('<ul>').addClass('collection'));
 
     $('#all').append($all);
     $('#completed').append($completed);
@@ -69,12 +76,23 @@
     });
   });
 
+  // eslint-disable-next-line func-names, wrap-iife
+  (function () {
+    const n = new Date();
+    const y = n.getFullYear();
+    const m = n.getMonth() + 1;
+    const d = n.getDate();
+    $('#date').text(`${m}/${d}/${y}`);
+  })();
+
+  const clearTask = () => $('#new-task[type=text], textarea').val('');
 
   $('#new-task').keyup((event) => {
     const code = event.which;
     const taskName = $('#new-task').val();
     if (code === 13) {
-      const option ={
+      clearTask();
+      const option = {
         contentType: 'application/json',
         method: 'POST',
         dataType: 'JSON',
@@ -88,9 +106,32 @@
           $('#completed ul.collection').remove();
           createCollection(data);
         }, (err) => {
+          // eslint-disable-next-line no-console
           console.log(err);
         });
     }
+  });
+
+  // $('.editButton').on('dblclick', (event) => {
+  //
+  // };
+
+    $('ul').on('click', '.closeIcon', (event) => {
+      const taskItem = event.target.parentNode;
+      taskItem.remove();
+      const id = $(event.target).attr('id').substr(4);
+      const data = JSON.stringify({ id });
+      const options = {
+        method: 'DELETE',
+        url: '/list',
+        contentType: 'application/json',
+        data,
+      };
+    });
+
+  $('ul').on('click', '.editButton', (event) => {
+    console.log('editing...');
+    const listItem = event.target.parentNode;
   });
 
   $('body').on('change', 'input[type=checkbox]', (event) => {
@@ -103,12 +144,22 @@
       contentType: 'application/json',
       data,
     };
+
+    // eslint-disable-next-line no-shadow
     $.ajax(options).then(() => $.getJSON('/list')).then((data) => {
       $('#all ul.collection').remove();
       $('#completed ul.collection').remove();
       createCollection(data);
     }, (err) => {
+      // eslint-disable-next-line no-console
       console.log(err);
     });
+  });
+
+  $.getJSON('/list').then((data) => {
+    createCollection(data);
+  }, (err) => {
+    // eslint-disable-next-line no-console
+    console.log(err);
   });
 })();
