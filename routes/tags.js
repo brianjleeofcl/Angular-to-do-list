@@ -1,3 +1,5 @@
+/* eslint-disable strict, func-names, consistent-return, no-param-reassign, no-unused-vars */
+
 'use strict';
 
 const knex = require('../knex');
@@ -26,17 +28,19 @@ router.get('/tags/:tagName', auth, (req, res, next) => {
   const tagName = req.params.tagName;
 
   knex.select('id').from('tags').where('user_id', req.claim.userId)
-    .where('tag_name', tagName).then((array) => {
-      const tagId = array[0].id
+    .where('tag_name', tagName)
+    .then((array) => {
+      const tagId = array[0].id;
 
       return knex('tasks_tags')
         .innerJoin('tasks', 'tasks_tags.task_id', 'tasks.id')
-        .where('tag_id', tagId)
-    }).then((array) => {
+        .where('tag_id', tagId);
+    })
+    .then((array) => {
       res.send(camelizeKeys(array));
-    }).catch((err) => next(err));
-
-})
+    })
+    .catch(err => next(err));
+});
 
 router.delete('/tags', auth, (req, res, next) => {
   const { tagName, taskId } = req.body;

@@ -10,16 +10,16 @@
           event.preventDefault();
 
           if ($('#name').val().trim() === '') {
-              Materialize.toast('Please enter your name.', 4000);
+            Materialize.toast('Please enter your name.', 4000);
 
-              return;
-            }
+            return;
+          }
 
           if ($('#phone').val().trim() === '') {
-              Materialize.toast('Please enter your phone number.', 4000);
+            Materialize.toast('Please enter your phone number.', 4000);
 
-              return;
-            }
+            return;
+          }
 
           if ($('#email').val().trim() === '') {
             Materialize.toast('Please enter your email.', 4000);
