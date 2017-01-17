@@ -63,4 +63,23 @@
       }
     });
   });
+
+  $('body').on('change', 'input[type=checkbox]', (event) => {
+    const completedAt = $(event.target).prop('checked') ? new Date() : null;
+    const id = $(event.target).attr('id').substr(4);
+    const data = JSON.stringify({ id, completedAt });
+    const options = {
+      method: 'PATCH',
+      url: '/list',
+      contentType: 'application/json',
+      data,
+    };
+    $.ajax(options).then(() => $.getJSON(`/tags/${tagName}`)).then((data) => {
+      $('#all ul.collection').remove();
+      $('#completed ul.collection').remove();
+      createCollection(data);
+    }, (err) => {
+      console.log(err);
+    });
+  });
 })();
