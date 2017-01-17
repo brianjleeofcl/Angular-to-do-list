@@ -4,5 +4,6 @@ module.exports = {
     'ryansobol/mocha',
     'ryansobol/node',
     'ryansobol/jquery',
+    'ryansobol/materialize'
   ]
 };
