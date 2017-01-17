@@ -20,7 +20,7 @@
     const $editIcon = $('<i>')
       .addClass('material-icons right editButton').text('edit');
     const $closeIcon = $('<i>')
-      .addClass('material-icons right closeIcon').text('close')
+      .addClass('material-icons right closeIcon').text('close');
 
     $li.append($input, $label, $editIcon, $closeIcon);
     object.tags.reduce(($target, str) => {
