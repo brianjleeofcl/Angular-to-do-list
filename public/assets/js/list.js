@@ -46,6 +46,21 @@
     $('#completed').append($completed);
   };
 
+  $(document).on('ready', () => {
+    $.getJSON('/token').then((loginStatus) => {
+      console.log(loginStatus);
+      if (!loginStatus) {
+        window.location.href = '/index.html'
+      } else {
+        $.getJSON('/list').then((data) => {
+          createCollection(data);
+        }, (err) => {
+          console.log(err);
+        })
+      }
+    });
+  });
+
   (function () {
     const n =  new Date();
     const y = n.getFullYear();
@@ -94,11 +109,5 @@
     }, (err) => {
       console.log(err);
     });
-  });
-
-  $.getJSON('/list').then((data) => {
-    createCollection(data);
-  }, (err) => {
-    console.log(err);
   });
 })();
