@@ -47,6 +47,14 @@
   };
 
   $(document).on('ready', () => {
+    (function () {
+      const n =  new Date();
+      const y = n.getFullYear();
+      const m = n.getMonth() + 1;
+      const d = n.getDate();
+      $('#date').text(`${m}/${d}/${y}`);
+    })();
+
     $.getJSON('/token').then((loginStatus) => {
       console.log(loginStatus);
       if (!loginStatus) {
@@ -61,13 +69,6 @@
     });
   });
 
-  (function () {
-    const n =  new Date();
-    const y = n.getFullYear();
-    const m = n.getMonth() + 1;
-    const d = n.getDate();
-    $('#date').text(`${m}/${d}/${y}`);
-  })();
 
   $('#new-task').keyup((event) => {
     const code = event.which;

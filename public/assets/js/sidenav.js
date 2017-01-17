@@ -38,7 +38,8 @@
     const $div = $('<div>').addClass('collapsible-body');
     const $dropdown = $('<ul>');
     array.reduce(($ul, tag) => {
-      const $link = $('<a>').addClass('waves-effect').text(tag);
+      const $link = $('<a>').addClass('waves-effect')
+        .text(tag).attr('href', `tag.html?tagName=${tag}`);
 
       $('<li>').append($link).appendTo($ul);
 
