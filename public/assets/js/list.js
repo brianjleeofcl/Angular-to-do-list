@@ -111,7 +111,7 @@
   $('ul').on('click', '.closeIcon', (event) => {
     const taskItem = event.target.parentNode;
     taskItem.remove();
-    const id = $(event.target.parentNode).attr('id').substr(4);
+    const id = $(event.target).siblings('input').attr('id').substr(4);
     const data = JSON.stringify({ id });
     const options = {
       method: 'DELETE',
@@ -150,12 +150,5 @@
       // eslint-disable-next-line no-console
       console.log(err);
     });
-  });
-
-  $.getJSON('/list').then((data) => {
-    createCollection(data);
-  }, (err) => {
-    // eslint-disable-next-line no-console
-    console.log(err);
   });
 })();
