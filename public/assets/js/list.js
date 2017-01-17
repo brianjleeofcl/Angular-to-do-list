@@ -13,8 +13,11 @@
     const $li = $('<li>').addClass('collection-item');
     const $input = $('<input>').attr({ type: 'checkbox', checked, id });
     const $label = $('<label>').attr('for', id).text(object.taskName);
+    const $editButton = $('<a>').addClass('btn-floating', 'btn-small', 'waves-effect', 'waves-light', 'red');
+    const $editIcon = $('<i>').addClass('material-icons').text('insert_chart');
 
-    $li.append($input, $label);
+
+    $li.append($input, $label, $editButton, $editIcon);
     object.tags.reduce(($target, str) => {
       $target.append(createTag(str));
 
@@ -47,18 +50,21 @@
   };
 
   (function () {
-    const n =  new Date();
+    const n = new Date();
     const y = n.getFullYear();
     const m = n.getMonth() + 1;
     const d = n.getDate();
     $('#date').text(`${m}/${d}/${y}`);
   })();
 
+  const clearTask = () => $('#new-task[type=text], textarea').val('');
+
   $('#new-task').keyup((event) => {
     const code = event.which;
     const taskName = $('#new-task').val();
     if (code === 13) {
-      const option ={
+      clearTask();
+      const option = {
         contentType: 'application/json',
         method: 'POST',
         dataType: 'JSON',
