@@ -64,7 +64,6 @@
     })();
 
     $.getJSON('/token').then((loginStatus) => {
-      console.log(loginStatus);
       if (!loginStatus) {
         window.location.href = '/index.html';
       } else {
@@ -80,9 +79,8 @@
   const clearTask = () => $('#new-task[type=text], textarea').val('');
 
   $('#new-task').keyup((event) => {
-    const code = event.which;
-    const taskName = $('#new-task').val();
-    if (code === 13) {
+    const taskName = $('#new-task:focus').val();
+    if (event.which === 13) {
       clearTask();
       const option = {
         contentType: 'application/json',
@@ -104,10 +102,6 @@
     }
   });
 
-  // $('.editButton').on('dblclick', (event) => {
-  //
-  // };
-
   $('ul').on('click', '.closeIcon', (event) => {
     const taskItem = event.target.parentNode;
     taskItem.remove();
@@ -126,9 +120,41 @@
   });
 
   $('ul').on('click', '.editButton', (event) => {
-    console.log('editing...');
-    const listItem = event.target.parentNode;
+    const id = $(event.target).siblings('input').attr('id').substr(4)
+    const $target = $(event.target).siblings('label');
+    const label = $target.text()
+    const $input = $('<input>').attr({ type: 'text', id })
+      .addClass('edit').val(label)
+
+    $target.replaceWith($input);
+    $(`#${id}`).siblings().hide();
   });
+
+  $('ul').on('keyup', 'input.edit', (event) => {
+    const taskName = $('input.edit:focus').val();
+    const id = $('input.edit:focus').attr('id');
+
+    if (event.which === 13) {
+      clearTask();
+      const option = {
+        contentType: 'application/json',
+        method: 'PATCH',
+        dataType: 'JSON',
+        url: '/list',
+        data: JSON.stringify({ taskName, id }),
+      };
+
+      $.ajax(option).then(() => $.getJSON('/list'))
+        .then((data) => {
+          $('#all ul.collection').remove();
+          $('#completed ul.collection').remove();
+          createCollection(data);
+        }, (err) => {
+          // eslint-disable-next-line no-console
+          console.log(err);
+        });
+    }
+  })
 
   $('body').on('change', 'input[type=checkbox]', (event) => {
     const completedAt = $(event.target).prop('checked') ? new Date() : null;
