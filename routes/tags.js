@@ -22,6 +22,12 @@ const auth = function (req, res, next) {
   });
 };
 
+router.get('/tags/:tagName', auth, (req, res, next) => {
+  const tagName = req.params.tagName;
+  res.send(tagName);
+
+})
+
 router.delete('/tags', auth, (req, res, next) => {
   const { tagName, taskId } = req.body;
 
