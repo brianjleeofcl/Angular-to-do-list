@@ -54,6 +54,7 @@
   };
 
   $(document).on('ready', () => {
+    // eslint-disable-next-line func-names, wrap-iife
     (function () {
       const n =  new Date();
       const y = n.getFullYear();
@@ -75,15 +76,6 @@
       }
     });
   });
-
-  // eslint-disable-next-line func-names, wrap-iife
-  (function () {
-    const n = new Date();
-    const y = n.getFullYear();
-    const m = n.getMonth() + 1;
-    const d = n.getDate();
-    $('#date').text(`${m}/${d}/${y}`);
-  })();
 
   const clearTask = () => $('#new-task[type=text], textarea').val('');
 
@@ -116,18 +108,22 @@
   //
   // };
 
-    $('ul').on('click', '.closeIcon', (event) => {
-      const taskItem = event.target.parentNode;
-      taskItem.remove();
-      const id = $(event.target).attr('id').substr(4);
-      const data = JSON.stringify({ id });
-      const options = {
-        method: 'DELETE',
-        url: '/list',
-        contentType: 'application/json',
-        data,
-      };
-    });
+  $('ul').on('click', '.closeIcon', (event) => {
+    const taskItem = event.target.parentNode;
+    taskItem.remove();
+    const id = $(event.target).attr('id').substr(4);
+    const data = JSON.stringify({ id });
+    const options = {
+      method: 'DELETE',
+      url: '/list',
+      contentType: 'application/json',
+      data,
+    };
+    
+    $.ajax(options).then((data) => {
+      Materialize.toast('Task removed', 1500);
+    }, (error) => {console.log(error)});
+  });
 
   $('ul').on('click', '.editButton', (event) => {
     console.log('editing...');
