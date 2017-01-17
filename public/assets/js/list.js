@@ -1,35 +1,6 @@
 (function () {
   'use strict';
 
-  const appendDate = function () {
-    const n =  new Date();
-    const y = n.getFullYear();
-    const m = n.getMonth() + 1;
-    const d = n.getDate();
-    $('#date').text(`${m}/${d}/${y}`);
-  };
-  appendDate();
-
-  const createNewTaskElement = function () {
-
-  };
-
-  $('#new-task').keyup((event) => {
-    const code = event.which;
-    const newTask = $('#new-task').val();
-    if (code === 13) {
-      const option =
-        {
-          contentType:'application/json',
-          method: 'POST',
-          dataType: 'JSON',
-          url: '/list',
-          data: JSON.stringify({ taskName: newTask }),
-        };
-      $.ajax(option).done();
-    }
-  });
-
   const createTag = function(tagName) {
     const $tag = $('<div>').text(tagName).addClass('chip right');
     const $close = $('<i>').addClass('close material-icons').text('close');
@@ -74,6 +45,59 @@
     $('#all').append($all);
     $('#completed').append($completed);
   };
+
+  (function () {
+    const n =  new Date();
+    const y = n.getFullYear();
+    const m = n.getMonth() + 1;
+    const d = n.getDate();
+    $('#date').text(`${m}/${d}/${y}`);
+  })();
+
+  $('#new-task').keyup((event) => {
+    const code = event.which;
+    const taskName = $('#new-task').val();
+    if (code === 13) {
+      const option ={
+        contentType:'application/json',
+        method: 'POST',
+        dataType: 'JSON',
+        url: '/list',
+        data: JSON.stringify({ taskName }),
+      };
+
+      $.ajax(option).then(() => {
+        return $.getJSON('/list')
+      }).then((data) => {
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
+      }, (err) => {
+        console.log(err);
+      });
+    }
+  });
+
+  $('body').on('change', 'input[type=checkbox]', (event) => {
+    const completedAt = $(event.target).prop('checked') ? new Date() : null;
+    const id = $(event.target).attr('id').substr(4);
+    const data = JSON.stringify({ id, completedAt });
+    const options = {
+      method: 'PATCH',
+      url: '/list',
+      contentType: 'application/json',
+      data
+    }
+    $.ajax(options).then(() => {
+      return $.getJSON('/list')
+    }).then((data) => {
+      $('#all ul.collection').remove();
+      $('#completed ul.collection').remove();
+      createCollection(data);
+    }, (err) => {
+      console.log(err);
+    });
+  });
 
   $.getJSON('/list').then((data) => {
     createCollection(data);

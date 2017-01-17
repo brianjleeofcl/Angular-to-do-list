@@ -53,5 +53,26 @@ router.post('/list', auth, (req, res, next) => {
     .catch((err) => {
       next(err);
     });
-})
+});
+
+router.patch('/list', auth, (req, res, next) => {
+  const id = req.body.id;
+
+  knex('tasks').where('id', id).then((array) => {
+    if (!array.length) {
+      throw new Error();
+    } else {
+      const row = {
+        taskName: req.body.taskName || array[0].taskName,
+        completedAt: req.body.completedAt || array[0].completedAt,
+        updatedAt: new Date()
+      }
+
+      return knex('tasks').where('id', id).update(decamelizeKeys(row), '*');
+    }
+  }).then((array) => {
+    res.send(camelizeKeys(array[0]))
+  }).catch((err) => next(err));
+});
+
 module.exports = router;
