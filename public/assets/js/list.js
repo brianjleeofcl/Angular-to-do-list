@@ -3,6 +3,8 @@
   // eslint-disable-next-line lines-around-directive, strict
   'use strict';
 
+  const view = window.location.search.substr(6)
+
   // eslint-disable-next-line func-names
   const createTag = function (tagName) {
     const $tag = $('<div>').text(tagName).addClass('chip right');
@@ -62,6 +64,10 @@
       const d = n.getDate();
       $('#date').text(`${m}/${d}/${y}`);
     })();
+
+    if (view === 'completed') {
+      $('#all').hide();
+    }
 
     $.getJSON('/token').then((loginStatus) => {
       if (!loginStatus) {

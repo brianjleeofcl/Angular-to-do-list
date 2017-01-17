@@ -63,7 +63,7 @@
 
     $ul.append($createLI($createUserView, name, email));
     $ul.append($createLI($createIconLink, 'All items', 'list', '/list.html'));
-    $ul.append($createLI($createIconLink, 'Completed', 'done_all', '/list.html'));
+    $ul.append($createLI($createIconLink, 'Completed', 'done_all', '/list.html?view=completed'));
     $ul.append($('<div>').addClass('divider'));
     $ul.append($createLI($createDropdown, tags).addClass('no-padding'));
     $ul.append($('<div>').addClass('divider'));
