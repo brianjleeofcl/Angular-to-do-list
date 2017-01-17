@@ -24,7 +24,17 @@ const auth = function (req, res, next) {
 
 router.get('/tags/:tagName', auth, (req, res, next) => {
   const tagName = req.params.tagName;
-  res.send(tagName);
+
+  knex.select('id').from('tags').where('user_id', req.claim.userId)
+    .where('tag_name', tagName).then((array) => {
+      const tagId = array[0].id
+
+      return knex('tasks_tags')
+        .innerJoin('tasks', 'tasks_tags.task_id', 'tasks.id')
+        .where('tag_id', tagId)
+    }).then((array) => {
+      res.send(camelizeKeys(array));
+    }).catch((err) => next(err));
 
 })
 

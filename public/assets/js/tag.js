@@ -8,11 +8,6 @@
     const $label = $('<label>').attr('for', id).text(object.taskName);
 
     $li.append($input, $label);
-    object.tags.reduce(($target, str) => {
-      $target.append(createTag(str));
-
-      return $target;
-    }, $li);
 
     if (checked) {
       const $p = $('<p>').text(`Completed: ${object.completedAt}`);
@@ -57,7 +52,6 @@
     $('#tag-name').text(cap(tagName));
 
     $.getJSON('/token').then((loginStatus) => {
-      console.log(loginStatus);
       if (!loginStatus) {
         window.location.href = '/index.html'
       } else {
