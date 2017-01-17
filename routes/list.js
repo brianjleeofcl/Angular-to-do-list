@@ -80,7 +80,7 @@ router.patch('/list', auth, (req, res, next) => {
   .catch(err => next(err));
 });
 
-router.delete('/list', authorize, (req, res, next) => {
+router.delete('/list', auth, (req, res, next) => {
   const id = req.body.id;
   const clause = { id: id };
   let task;

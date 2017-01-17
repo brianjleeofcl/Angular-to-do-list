@@ -56,7 +56,7 @@
   $(document).on('ready', () => {
     // eslint-disable-next-line func-names, wrap-iife
     (function () {
-      const n =  new Date();
+      const n = new Date();
       const y = n.getFullYear();
       const m = n.getMonth() + 1;
       const d = n.getDate();
@@ -66,13 +66,13 @@
     $.getJSON('/token').then((loginStatus) => {
       console.log(loginStatus);
       if (!loginStatus) {
-        window.location.href = '/index.html'
+        window.location.href = '/index.html';
       } else {
         $.getJSON('/list').then((data) => {
           createCollection(data);
         }, (err) => {
           console.log(err);
-        })
+        });
       }
     });
   });
@@ -122,7 +122,7 @@
 
     $.ajax(options).then((data) => {
       Materialize.toast('Task removed', 1500);
-    }, (error) => {console.log(error)});
+    }, (error) => { console.log(error); });
   });
 
   $('ul').on('click', '.editButton', (event) => {
