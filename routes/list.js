@@ -107,7 +107,7 @@ router.patch('/list', auth, (req, res, next) => {
     }
   }).then((array) => {
     const userId = req.claim.userId;
-    const tags = req.body.tags;
+    const tags = req.body.tags || [];
 
     if (!tags.length) {
       res.send(array[0]);
@@ -129,11 +129,11 @@ router.patch('/list', auth, (req, res, next) => {
     return Promise.all(promises);
   }).then((arr) => {
     const rows = decamelizeKeys(arr.map((tagId) => {
-      return { tagId, taskId }
+      return { tagId, taskId: id }
     }));
 
     return knex('tasks_tags').insert(rows, '*');
-  }).then(() => {
+  }).then((array) => {
     res.send(camelizeKeys(array[0]));
   })
   .catch(err => next(err));
