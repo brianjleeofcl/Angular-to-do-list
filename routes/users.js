@@ -25,7 +25,7 @@ const app = express();
 router.post('/users', ev(validations.post), (req, res, next) => {
   let user;
   const { name, email, password, password_verify, phone } = req.body;
-  console.log(req.body)
+  console.log(req.body);
 
   if (!name || name.trim() === '') {
     return next(boom.create(400, 'Name field must not be blank'));

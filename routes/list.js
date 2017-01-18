@@ -75,17 +75,10 @@ router.post('/list', auth, (req, res, next) => {
         return decamelizeKeys({ tagId, taskId });
       });
 
-<<<<<<< HEAD
-      return knex('tasks_tags').insert(data, '*')
-    }).then(() => {
-
-      res.send(addedTask);
-=======
       return knex('tasks_tags').insert(data, '*');
     })
     .then(() => {
       res.send('yes');
->>>>>>> linting
     })
     .catch((err) => {
       next(err);
