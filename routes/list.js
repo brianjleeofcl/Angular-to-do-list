@@ -62,15 +62,16 @@ router.post('/list', auth, (req, res, next) => {
       addedTask = camelizeKeys(row[0]);
 
       const promises = tags.map((tagName) => {
-        return knex('tags').where('tag_name', tagName).then((array) => {
-          if (array.length) {
-            return array[0].id;
-          } else {
-            return knex('tags')
-              .insert(decamelizeKeys({ userId, tagName }), 'id')
-              .then((array) => array[0])
-          }
-        });
+        return knex('tags')
+          .where(decamelizeKeys({ tagName, userId })).then((array) => {
+            if (array.length) {
+              return array[0].id;
+            } else {
+              return knex('tags')
+                .insert(decamelizeKeys({ userId, tagName }), 'id')
+                .then((array) => array[0])
+              }
+          });
       });
 
       return Promise.all(promises)
@@ -105,6 +106,34 @@ router.patch('/list', auth, (req, res, next) => {
       return knex('tasks').where('id', id).update(decamelizeKeys(row), '*');
     }
   }).then((array) => {
+    const userId = req.claim.userId;
+    const tags = req.body.tags;
+
+    if (!tags.length) {
+      res.send(array[0]);
+    }
+
+    const promises = tags.map((tagName) => {
+      return knex('tags').where(decamelizeKeys({ userId, tagName }))
+        .then((array) => {
+          if (array.length) {
+            return array[0].id;
+          } else {
+            return knex('tags')
+              .insert(decamelizeKeys({ userId, tagName }), 'id')
+              .then((array) => array[0])
+            }
+          });
+    });
+
+    return Promise.all(promises);
+  }).then((arr) => {
+    const rows = decamelizeKeys(arr.map((tagId) => {
+      return { tagId, taskId }
+    }));
+
+    return knex('tasks_tags').insert(rows, '*');
+  }).then(() => {
     res.send(camelizeKeys(array[0]));
   })
   .catch(err => next(err));

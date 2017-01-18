@@ -19,9 +19,10 @@
       type: 'text',
       placeholder: 'tag:'
     }).addClass('autocomplete new-tag-field');
+    const $container = $('<div>').addClass('new-tags')
 
     $(event.target).hide();
-    $(event.target).after($field);
+    $(event.target).after($field, $container);
     $field.autocomplete(window.matAutocomplete)
   });
 

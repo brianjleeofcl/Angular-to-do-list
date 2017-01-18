@@ -92,11 +92,14 @@
 
   $('#new-task').keyup((event) => {
     const taskName = $('#new-task:focus').val();
-    const tags = window.newTagList;
+    const tags = getArrayFromTags($('div.new-tags').children());
 
     if (event.which === 13) {
       clearTask();
-      $('.new-tags').empty();
+      $('.new-tags').remove();
+      $('.new-tag-field').remove();
+      $('a.tag-field').show();
+
       const option = {
         contentType: 'application/json',
         method: 'POST',
@@ -135,13 +138,17 @@
     }, (error) => { console.log(error); });
   });
 
+  const getArrayFromTags = function ($array) {
+    return [...$array.map((_, div) => div.textContent.slice(0, -5))];
+  }
+
   $('ul').on('click', '.editButton', (event) => {
-    const id = $(event.target).siblings('input').attr('id').substr(4)
+    const id = $(event.target).siblings('input').attr('id').substr(4);
     const $target = $(event.target).siblings('label');
-    const label = $target.text()
+    const label = $target.text();
     const $input = $('<input>').attr({ type: 'text', id })
-      .addClass('edit').val(label)
-    const $addTag = $('<a>').addClass('tag-field').text('Click to add tags')
+      .addClass('edit').val(label);
+    const $addTag = $('<a>').addClass('tag-field edit').text('Click to add tags');
 
     $target.replaceWith($input);
     $input.after($addTag);
@@ -151,15 +158,20 @@
   $('ul').on('keyup', 'input.edit', (event) => {
     const taskName = $('input.edit:focus').val();
     const id = $('input.edit:focus').attr('id');
+    const tags = getArrayFromTags($('div.new-tags').children());
 
     if (event.which === 13) {
       clearTask();
+      $('.new-tags').remove();
+      $('.new-tag-field').remove();
+      $('a.tag-field.edit').remove();
+
       const option = {
         contentType: 'application/json',
         method: 'PATCH',
         dataType: 'JSON',
         url: '/list',
-        data: JSON.stringify({ taskName, id }),
+        data: JSON.stringify({ taskName, id, tags }),
       };
 
       $.ajax(option).then(() => $.getJSON('/list'))
