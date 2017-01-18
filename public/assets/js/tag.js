@@ -60,7 +60,7 @@
             console.log(data.length);
             createCollection(data);
           } else {
-
+            
           }
         }, (err) => {
           console.log(err);
