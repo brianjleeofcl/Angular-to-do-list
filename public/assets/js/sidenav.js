@@ -75,34 +75,48 @@
     return $nav;
   };
 
-  $.getJSON('/sidenav').then((data) => {
-    if ($('nav').length) {
-      $('nav').remove();
-    }
+  const renderNav = function () {
+    $.getJSON('/sidenav').then((data) => {
+      console.log(data);
+      if ($('nav').length) {
+        $('nav').remove();
+      }
 
-    $('body').prepend($createNav(data));
-    $('.button-collapse').sideNav({
-      closeOnclick: true,
-      draggable: true,
-    });
-
-    $('.collapsible').collapsible();
-
-    $('#log-out').click((event) => {
-      event.preventDefault();
-
-      const options = {
-        method: 'DELETE',
-        dataType: 'json',
-        url: '/token',
-      };
-
-      $.ajax(options).then(() => {
-        window.location.href = '/index.html';
-      }, () => {
-        console.log('Unable to log out. Please try again.');
+      $('body').prepend($createNav(data));
+      $('.button-collapse').sideNav({
+        closeOnclick: true,
+        draggable: true,
       });
-    });
-  }, err => err);
+
+      $('.collapsible').collapsible();
+
+      $('#log-out').click((event) => {
+        event.preventDefault();
+
+        const options = {
+          method: 'DELETE',
+          dataType: 'json',
+          url: '/token',
+        };
+
+        $.ajax(options).then(() => {
+          window.location.href = '/index.html';
+        }, () => {
+          console.log('Unable to log out. Please try again.');
+        });
+      });
+    }, err => err);
+  }
+
+
+  $(document).on('ready', renderNav);
+
+  // We'll figure this part eventually, hopefully.
+  // $('#new-task').keyup((event) => {
+  //   if (event.which === 13) {
+  //     console.log('yup!');
+  //     renderNav()
+  //   };
+  // });
 
 })();
