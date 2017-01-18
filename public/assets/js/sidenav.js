@@ -40,7 +40,7 @@
     array.reduce(($ul, tag) => {
       const $link = $('<a>').addClass('waves-effect')
         .text(tag).attr('href', `tag.html?tagName=${tag}`);
-      const $close = $('<i>').addClass('material-icons right')
+      const $close = $('<i>').addClass('material-icons right close')
         .text('close')
 
       $link.append($close);
@@ -109,6 +109,14 @@
 
 
   $(document).on('ready', renderNav);
+
+  $('body').on('click', 'i.close', (event) => {
+    console.log('working');
+    const tagItem = event.target.parentNode;
+    tagItem.href = 'javascript: void(0)'
+    console.log(tagItem.href);
+    tagItem.remove();
+  })
 
   // We'll figure this part eventually, hopefully.
   // $('#new-task').keyup((event) => {

@@ -174,6 +174,11 @@
     }
   })
 
+  $('body').on('click', '#clear-completed', (event) => {
+    console.log('fuck this');
+    $('#completed').emtpy();
+  });
+
   $('body').on('change', 'input[type=checkbox]', (event) => {
     const completedAt = $(event.target).prop('checked') ? new Date() : null;
     const id = $(event.target).attr('id').substr(4);
