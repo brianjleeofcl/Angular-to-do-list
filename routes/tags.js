@@ -6,6 +6,8 @@ const knex = require('../knex');
 
 const jwt = require('jsonwebtoken');
 
+const boom = require('boom');
+
 const { camelizeKeys, decamelizeKeys } = require('humps');
 
 const express = require('express');
@@ -56,6 +58,7 @@ router.get('/tags/:tagName', auth, (req, res, next) => {
     .catch(err => next(err));
 });
 
+// Deletes a tag from associated task when task is deleted.
 router.delete('/tags', auth, (req, res, next) => {
   const { tagName, taskId } = req.body;
 
@@ -72,6 +75,35 @@ router.delete('/tags', auth, (req, res, next) => {
       res.send(array[0]);
     })
     .catch(err => next(err));
+});
+
+// Deletes a tag separately from any task association.
+router.delete('/tags', auth, (req, res, next) => {
+  const { tagName, tagId } = req.body;
+  const clause = { tagName, tagId };
+  let tag;
+
+  knex('tags')
+    .where(clause)
+    .first()
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Tag not found');
+      }
+      tag = camelizeKeys(row);
+
+      return knex('tags')
+        .del()
+        .where('id', tag.id);
+    })
+    .then(() => {
+      delete tag.id;
+
+      res.send(tag);
+    })
+    .catch((err) => {
+      next(err);
+    });
 });
 
 module.exports = router;
