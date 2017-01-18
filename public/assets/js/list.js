@@ -80,7 +80,7 @@
         });
 
         $.getJSON('/tags').then((data) => {
-          $('#new-tag-field.autocomplete').autocomplete({ data });
+          window.matAutocomplete = { data };
         }, (err) => {
           console.log(err);
         })
@@ -141,9 +141,11 @@
     const label = $target.text()
     const $input = $('<input>').attr({ type: 'text', id })
       .addClass('edit').val(label)
+    const $addTag = $('<a>').addClass('tag-field').text('Click to add tags')
 
     $target.replaceWith($input);
-    $(`#${id}`).siblings().hide();
+    $input.after($addTag);
+    $addTag.nextAll().hide();
   });
 
   $('ul').on('keyup', 'input.edit', (event) => {

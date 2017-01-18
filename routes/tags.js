@@ -60,6 +60,10 @@ router.get('/tags/:tagName', auth, (req, res, next) => {
 
 // Deletes a tag from associated task when task is deleted.
 router.delete('/tags', auth, (req, res, next) => {
+
+});
+
+router.delete('/task-tag', auth, (req, res, next) => {
   const { tagName, taskId } = req.body;
 
   knex('tags').innerJoin('tasks_tags', 'tags.id', 'tasks_tags.tag_id')

@@ -15,12 +15,18 @@
   window.newTagList = [];
 
   $('body').on('click', 'a.tag-field', (event) => {
+    const $field = $('<input>').attr({
+      type: 'text',
+      placeholder: 'tag:'
+    }).addClass('autocomplete new-tag-field');
+
     $(event.target).hide();
-    $(event.target).next().show();
+    $(event.target).after($field);
+    $field.autocomplete(window.matAutocomplete)
   });
 
-  $('#new-tag-field').on('keyup', (event) => {
-    const tagName = $(event.target).val();
+  $('ul').on('keyup', 'input.new-tag-field', (event) => {
+    const tagName = $(event.target).val().toLowerCase().trim();
 
     if (event.which === 13) {
       if (!newTagList.includes(tagName)) {
@@ -44,7 +50,7 @@
     const option = {
       dataType: 'json',
       method: 'DELETE',
-      url: '/tags',
+      url: '/task-tag',
       contentType: 'application/json',
       data,
     };
