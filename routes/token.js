@@ -32,7 +32,7 @@ router.get('/token', (req, res) => {
   });
 });
 // eslint-disable-next-line consistent-return
-router.post('/token', ev(validations.post), (req, res, next) => {
+router.post('/token', (req, res, next) => {
   let user;
   const { email, password } = req.body;
 
