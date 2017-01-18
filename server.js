@@ -32,8 +32,6 @@ const list = require('./routes/list');
 
 const tags = require('./routes/tags');
 
-const taskTag = require('./routes/task-tags');
-
 app.use(express.static(path.resolve('public')));
 
 
@@ -43,7 +41,6 @@ app.use(users);
 app.use(sidenav);
 app.use(list);
 app.use(tags);
-app.use(taskTag);
 
 const port = process.env.PORT || 8000;
 
