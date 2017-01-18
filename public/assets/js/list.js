@@ -104,7 +104,8 @@
         data: JSON.stringify({ taskName, tags })
       };
 
-      $.ajax(option).then(() => $.getJSON('/list'))
+      $.ajax(option).then(() => $.getJSON('/list'),
+        (err) => new Error('AJAX error'))
         .then((data) => {
           $('#all ul.collection').remove();
           $('#completed ul.collection').remove();

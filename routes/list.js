@@ -51,12 +51,13 @@ router.post('/list', auth, (req, res, next) => {
   const { taskName, tags } = req.body;
   const task = { taskName, userId };
   const tagIds = [];
-  let taskId;
+  let taskId, addedTask;
 
   knex('tasks')
     .insert(decamelizeKeys(task), '*')
     .then((row) => {
       taskId = camelizeKeys(row[0]).id;
+      addedTask = camelizeKeys(row[0]);
 
       const promises = tags.map((tagName) => {
         return knex('tags').where('tag_name', tagName).then((array) => {
@@ -80,7 +81,7 @@ router.post('/list', auth, (req, res, next) => {
       return knex('tasks_tags').insert(data, '*')
     }).then(() => {
 
-      res.send('yes');
+      res.send(addedTask);
     })
     .catch((err) => {
       next(err);
