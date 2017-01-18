@@ -77,7 +77,6 @@
 
   const renderNav = function () {
     $.getJSON('/sidenav').then((data) => {
-      console.log(data);
       if ($('nav').length) {
         $('nav').remove();
       }

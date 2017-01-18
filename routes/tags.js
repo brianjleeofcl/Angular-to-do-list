@@ -57,21 +57,7 @@ router.get('/tags/:tagName', auth, (req, res, next) => {
 });
 
 router.delete('/tags', auth, (req, res, next) => {
-  const { tagName, taskId } = req.body;
 
-  knex('tags').innerJoin('tasks_tags', 'tags.id', 'tasks_tags.tag_id')
-    .where('tags.tag_name', tagName)
-    .where('tasks_tags.task_id', taskId)
-    .select('tasks_tags.id')
-    .then((array) => {
-      const id = array[0].id;
-
-      return knex('tasks_tags').where('id', id).del('*');
-    })
-    .then((array) => {
-      res.send(array[0]);
-    })
-    .catch(err => next(err));
 });
 
 module.exports = router;
