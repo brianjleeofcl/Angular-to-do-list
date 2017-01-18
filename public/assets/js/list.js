@@ -40,6 +40,14 @@
     return $li;
   };
 
+  const displayProgress = function (total, completed) {
+    const percent = (completed / total * 100) || 0;
+    const $bar = $('<div>').addClass('determinate').attr('style', `width: ${percent}%`);
+
+    $('#rate-string').text(`${completed} out of ${total} completed`);
+    $('.progress').append($bar);
+  };
+
   // eslint-disable-next-line func-names
   const createCollection = function (array) {
     const all = array.filter(obj => !obj.completedAt);
@@ -53,6 +61,7 @@
 
     $('#all').append($all);
     $('#completed').append($completed);
+    displayProgress(array.length, completed.length);
   };
 
   $(document).on('ready', () => {
