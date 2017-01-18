@@ -18,6 +18,14 @@
     return $li;
   };
 
+  const displayProgress = function (total, completed) {
+    const percent = (completed / total * 100) || 0
+    const $bar = $('<div>').addClass('determinate').attr('style', `width: ${percent}%`)
+
+    $('#rate-string').text(`${completed} out of ${total} completed`);
+    $('.progress').append($bar)
+  }
+
   const createCollection = function (array) {
     const all = array.filter(obj => !obj.completedAt);
     const completed = array.filter(obj => Boolean(obj.completedAt));
@@ -32,6 +40,7 @@
 
     $('#all').append($all);
     $('#completed').append($completed);
+    displayProgress(array.length, completed.length)
   };
 
   const cap = function(str) {
@@ -60,7 +69,7 @@
             console.log(data.length);
             createCollection(data);
           } else {
-            
+
           }
         }, (err) => {
           console.log(err);
