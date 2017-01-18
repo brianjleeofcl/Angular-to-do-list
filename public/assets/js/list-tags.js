@@ -1,6 +1,36 @@
 (function () {
   'use strict';
 
+  const createTag = function (tagName) {
+    const $tag = $('<div>').text(tagName).addClass('chip right');
+    const $close = $('<i>').addClass('close material-icons').text('close');
+
+    return $tag.append($close);
+  };
+
+  const clearInput = function () {
+    $(event.target).val('')
+  }
+
+  window.newTagList = [];
+
+  $('body').on('click', 'a.tag-field', (event) => {
+    $(event.target).hide();
+    $(event.target).next().show();
+  })
+
+  $('#new-tag-field').on('keyup', (event) => {
+    const tagName = $(event.target).val();
+
+    if (event.which === 13) {
+      if (!newTagList.includes(tagName)) {
+        $('.new-tags').append(createTag(tagName));
+        newTagList.push(tagName);
+      }
+      clearInput();
+    }
+  })
+
   $('body').on('click', '.chip .close', (event) => {
     const taskId = $(event.target)
       .parents('.collection-item')

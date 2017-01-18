@@ -78,6 +78,12 @@
         }, (err) => {
           console.log(err);
         });
+
+        $.getJSON('/tags').then((data) => {
+          $('#new-tag-field.autocomplete').autocomplete({ data });
+        }, (err) => {
+          console.log(err);
+        })
       }
     });
   });
@@ -86,6 +92,8 @@
 
   $('#new-task').keyup((event) => {
     const taskName = $('#new-task:focus').val();
+    const tags = window.newTagList;
+
     if (event.which === 13) {
       clearTask();
       const option = {
@@ -93,7 +101,7 @@
         method: 'POST',
         dataType: 'JSON',
         url: '/list',
-        data: JSON.stringify({ taskName }),
+        data: JSON.stringify({ taskName, tags })
       };
 
       $.ajax(option).then(() => $.getJSON('/list'))
