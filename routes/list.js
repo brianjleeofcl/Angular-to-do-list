@@ -75,7 +75,9 @@ router.post('/list', auth, (req, res, next) => {
 
       return Promise.all(promises)
     }).then((arr) => {
-      return knex('tasks_tags').insert(decamelizeKeys({ tagId, taskId }), '*');
+      const rows = decamelizeKeys(arr.map((tagId) => { tagId, taskId }));
+      
+      return knex('tasks_tags').insert(rows, '*');
     }).then((_) => {
 
       res.send(addedTask);

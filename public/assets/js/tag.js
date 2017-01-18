@@ -38,7 +38,7 @@
     return str[0].toUpperCase() + str.substr(1);
   };
 
-  const tagName = window.location.search.substr(9);
+  const tagName = window.location.search.substr(9).replace(/%20/, ' ');
 
   $(document).on('ready', () => {
     (function () {
@@ -56,7 +56,12 @@
         window.location.href = '/index.html';
       } else {
         $.getJSON(`/tags/${tagName}`).then((data) => {
-          createCollection(data);
+          if (data.length) {
+            console.log(data.length);
+            createCollection(data);
+          } else {
+
+          }
         }, (err) => {
           console.log(err);
         });
