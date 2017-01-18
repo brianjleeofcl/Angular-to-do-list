@@ -30,13 +30,15 @@ router.get('/list', auth, (req, res, next) => {
   knex('tasks').select('id', 'user_id', 'task_name', 'completed_at')
     .where('tasks.user_id', req.claim.userId).orderBy('completed_at', 'DESC')
     .then((array) => {
-      const promises = camelizeKeys(array).map(obj => knex('tasks_tags')
+      const promises = camelizeKeys(array).map(obj => {
+        return knex('tasks_tags')
           .innerJoin('tags', 'tasks_tags.tag_id', 'tags.id')
           .where('tasks_tags.task_id', obj.id)
           .then((array) => {
             obj.tags = camelizeKeys(array).map(tag => tag.tagName);
             return obj;
-          }));
+          })
+      });
 
       return Promise.all(promises);
     })
@@ -65,21 +67,16 @@ router.post('/list', auth, (req, res, next) => {
             return array[0].id;
           } else {
             return knex('tags')
-              .insert(decamelizeKeys({ userId, tagName }), 'id');
+              .insert(decamelizeKeys({ userId, tagName }), 'id')
+              .then((array) => array[0])
           }
         });
       });
 
       return Promise.all(promises)
     }).then((arr) => {
-      const data = arr.map((val) => {
-        const tagId = Array.isArray(val) ? val[0] : val;
-
-        return decamelizeKeys({ tagId, taskId })
-      });
-
-      return knex('tasks_tags').insert(data, '*')
-    }).then(() => {
+      return knex('tasks_tags').insert(decamelizeKeys({ tagId, taskId }), '*');
+    }).then((_) => {
 
       res.send(addedTask);
     })

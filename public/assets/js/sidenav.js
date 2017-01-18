@@ -40,7 +40,10 @@
     array.reduce(($ul, tag) => {
       const $link = $('<a>').addClass('waves-effect')
         .text(tag).attr('href', `tag.html?tagName=${tag}`);
+      const $close = $('<i>').addClass('material-icons right')
+        .text('close')
 
+      $link.append($close);
       $('<li>').append($link).appendTo($ul);
 
       return $ul;

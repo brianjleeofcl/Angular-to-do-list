@@ -96,6 +96,7 @@
 
     if (event.which === 13) {
       clearTask();
+      $('.new-tags').empty();
       const option = {
         contentType: 'application/json',
         method: 'POST',
