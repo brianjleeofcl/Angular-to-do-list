@@ -58,11 +58,6 @@ router.get('/tags/:tagName', auth, (req, res, next) => {
     .catch(err => next(err));
 });
 
-// Deletes a tag from associated task when task is deleted.
-router.delete('/tags', auth, (req, res, next) => {
-
-});
-
 router.delete('/task-tag', auth, (req, res, next) => {
   const { tagName, taskId } = req.body;
 
@@ -83,22 +78,26 @@ router.delete('/task-tag', auth, (req, res, next) => {
 
 // Deletes a tag separately from any task association.
 router.delete('/tags', auth, (req, res, next) => {
-  const { tagName, tagId } = req.body;
-  const clause = { tagName, tagId };
+  const userId = req.claim.userId;
+  const { tagName } = req.body;
+  const clause = decamelizeKeys({ tagName, userId });
   let tag;
 
   knex('tags')
-    .where(clause)
+    // .where(clause)
+    .where('user_id', userId)
+    .where('tag_name', tagName)
     .first()
     .then((row) => {
       if (!row) {
         throw boom.create(404, 'Tag not found');
       }
       tag = camelizeKeys(row);
+      console.log(tag);
 
       return knex('tags')
-        .del()
-        .where('id', tag.id);
+        .del('*')
+        .where('tag_name', tag.tagName);
     })
     .then(() => {
       delete tag.id;

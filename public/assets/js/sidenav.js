@@ -111,12 +111,24 @@
   $(document).on('ready', renderNav);
 
   $('body').on('click', 'i.close', (event) => {
-    console.log('working');
     const tagItem = event.target.parentNode;
     tagItem.href = 'javascript: void(0)'
-    console.log(tagItem.href);
     tagItem.remove();
-  })
+    let tagName = tagItem.textContent.slice(0, -5);
+    console.log(tagName);
+    const data = JSON.stringify({ tagName });
+    const options = {
+      method: 'DELETE',
+      url: '/tags',
+      contentType: 'application/json',
+      data,
+    };
+
+    $.ajax(options).then((data) => {
+      console.log('sent')
+      Materialize.toast('Tag removed', 1500);
+    }, (error) => { console.log(error); });
+  });
 
   // We'll figure this part eventually, hopefully.
   // $('#new-task').keyup((event) => {
