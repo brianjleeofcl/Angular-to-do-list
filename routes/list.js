@@ -47,7 +47,7 @@ router.get('/list', auth, (req, res, next) => {
 });
 
 router.post('/list', auth, (req, res, next) => {
-  const userId = req.claim.userId
+  const userId = req.claim.userId;
   const { taskName, tags } = req.body;
   const task = { taskName, userId };
   const tagIds = [];
@@ -58,28 +58,25 @@ router.post('/list', auth, (req, res, next) => {
     .then((row) => {
       taskId = camelizeKeys(row[0]).id;
 
-      const promises = tags.map((tagName) => {
-        return knex('tags').where('tag_name', tagName).then((array) => {
-          if (array.length) {
-            return array[0].id;
-          } else {
-            return knex('tags')
-              .insert(decamelizeKeys({ userId, tagName }), 'id');
-          }
-        });
-      });
+      const promises = tags.map(tagName => knex('tags').where('tag_name', tagName).then((array) => {
+        if (array.length) {
+          return array[0].id;
+        }
+        return knex('tags')
+          .insert(decamelizeKeys({ userId, tagName }), 'id');
+      }));
 
-      return Promise.all(promises)
+      return Promise.all(promises);
     }).then((arr) => {
       const data = arr.map((val) => {
         const tagId = Array.isArray(val) ? val[0] : val;
 
-        return decamelizeKeys({ tagId, taskId })
+        return decamelizeKeys({ tagId, taskId });
       });
 
-      return knex('tasks_tags').insert(data, '*')
-    }).then(() => {
-
+      return knex('tasks_tags').insert(data, '*');
+    })
+    .then(() => {
       res.send('yes');
     })
     .catch((err) => {

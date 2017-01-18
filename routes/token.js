@@ -31,7 +31,7 @@ router.get('/token', (req, res) => {
     return res.send(true);
   });
 });
-
+// eslint-disable-next-line consistent-return
 router.post('/token', ev(validations.post), (req, res, next) => {
   let user;
   const { email, password } = req.body;
@@ -71,6 +71,7 @@ router.post('/token', ev(validations.post), (req, res, next) => {
   .catch(err => next(err));
 });
 
+// eslint-disable-next-line consistent-return
 app.use((err, _req, res, _next) => {
   if (err.status) {
     return res.status(err.status).send(err);
@@ -82,7 +83,7 @@ app.use((err, _req, res, _next) => {
       .set('Content-Type', 'text/plain')
       .send(err.message);
   }
-
+  // eslint-disable-next-line no-console
   console.error(err.stack);
   res.sendStatus(500);
 });

@@ -9,15 +9,15 @@
   };
 
   const clearInput = function () {
-    $(event.target).val('')
-  }
+    $(event.target).val('');
+  };
 
   window.newTagList = [];
 
   $('body').on('click', 'a.tag-field', (event) => {
     $(event.target).hide();
     $(event.target).next().show();
-  })
+  });
 
   $('#new-tag-field').on('keyup', (event) => {
     const tagName = $(event.target).val();
@@ -29,7 +29,7 @@
       }
       clearInput();
     }
-  })
+  });
 
   $('body').on('click', '.chip .close', (event) => {
     const taskId = $(event.target)

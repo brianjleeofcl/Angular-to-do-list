@@ -36,9 +36,9 @@
 
   const cap = function(str) {
     return str[0].toUpperCase() + str.substr(1);
-  }
+  };
 
-  const tagName = window.location.search.substr(9)
+  const tagName = window.location.search.substr(9);
 
   $(document).on('ready', () => {
     (function () {
@@ -53,13 +53,13 @@
 
     $.getJSON('/token').then((loginStatus) => {
       if (!loginStatus) {
-        window.location.href = '/index.html'
+        window.location.href = '/index.html';
       } else {
         $.getJSON(`/tags/${tagName}`).then((data) => {
           createCollection(data);
         }, (err) => {
           console.log(err);
-        })
+        });
       }
     });
   });

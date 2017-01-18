@@ -27,14 +27,15 @@ const auth = function (req, res, next) {
 router.get('/tags', auth, (req, res, next) => {
   knex.select('tag_name').from('tags').where('user_id', req.claim.userId)
     .then((array) => {
-    const tags = camelizeKeys(array).reduce((acc, obj) => {
-      acc[obj.tagName] = null;
+      const tags = camelizeKeys(array).reduce((acc, obj) => {
+        acc[obj.tagName] = null;
 
-      return acc;
-    }, {});
+        return acc;
+      }, {});
 
-    res.send(tags);
-  }).catch((err) => next(err));
+      res.send(tags);
+    })
+  .catch(err => next(err));
 });
 
 router.get('/tags/:tagName', auth, (req, res, next) => {
