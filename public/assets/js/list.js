@@ -3,7 +3,7 @@
   // eslint-disable-next-line lines-around-directive, strict
   'use strict';
 
-  const view = window.location.search.substr(6)
+  const view = window.location.search.substr(6);
 
   // eslint-disable-next-line func-names
   const createTag = function (tagName) {
@@ -83,7 +83,7 @@
           $('#new-tag-field.autocomplete').autocomplete({ data });
         }, (err) => {
           console.log(err);
-        })
+        });
       }
     });
   });
@@ -101,7 +101,7 @@
         method: 'POST',
         dataType: 'JSON',
         url: '/list',
-        data: JSON.stringify({ taskName, tags })
+        data: JSON.stringify({ taskName, tags }),
       };
 
       $.ajax(option).then(() => $.getJSON('/list'))
@@ -134,11 +134,11 @@
   });
 
   $('ul').on('click', '.editButton', (event) => {
-    const id = $(event.target).siblings('input').attr('id').substr(4)
+    const id = $(event.target).siblings('input').attr('id').substr(4);
     const $target = $(event.target).siblings('label');
-    const label = $target.text()
+    const label = $target.text();
     const $input = $('<input>').attr({ type: 'text', id })
-      .addClass('edit').val(label)
+      .addClass('edit').val(label);
 
     $target.replaceWith($input);
     $(`#${id}`).siblings().hide();
@@ -168,7 +168,7 @@
           console.log(err);
         });
     }
-  })
+  });
 
   $('body').on('change', 'input[type=checkbox]', (event) => {
     const completedAt = $(event.target).prop('checked') ? new Date() : null;
