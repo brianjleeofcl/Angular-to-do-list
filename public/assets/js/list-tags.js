@@ -12,8 +12,6 @@
     $(event.target).val('');
   };
 
-  window.newTagList = [];
-
   $('body').on('click', 'a.tag-field', (event) => {
     const $field = $('<input>').attr({
       type: 'text',
@@ -30,10 +28,7 @@
     const tagName = $(event.target).val().toLowerCase().trim();
 
     if (event.which === 13) {
-      if (!newTagList.includes(tagName)) {
-        $('.new-tags').append(createTag(tagName));
-        newTagList.push(tagName);
-      }
+      $('.new-tags').append(createTag(tagName));
       clearInput();
     }
   });
