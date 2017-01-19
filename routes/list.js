@@ -168,4 +168,24 @@ router.delete('/list', auth, (req, res, next) => {
     });
 });
 
+router.delete('/list/completed', auth, (req, res, next) => {
+  const userId = req.claim.userId;
+  const clause = { userId };
+  let completed;
+
+  knex('tasks')
+    .whereNotNull('completed_at')
+    .where('user_id', userId)
+    .del('*')
+    .then((row) => {
+      if (!row) {
+        throw boom.create(404, 'Internal Server Error');
+      }
+      res.send(row);
+    })
+    .catch((err) => {
+      next(err);
+    });
+});
+
 module.exports = router;

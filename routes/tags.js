@@ -80,11 +80,9 @@ router.delete('/task-tag', auth, (req, res, next) => {
 router.delete('/tags', auth, (req, res, next) => {
   const userId = req.claim.userId;
   const { tagName } = req.body;
-  const clause = decamelizeKeys({ tagName, userId });
   let tag;
 
   knex('tags')
-    // .where(clause)
     .where('user_id', userId)
     .where('tag_name', tagName)
     .first()
@@ -93,7 +91,6 @@ router.delete('/tags', auth, (req, res, next) => {
         throw boom.create(404, 'Tag not found');
       }
       tag = camelizeKeys(row);
-      console.log(tag);
 
       return knex('tags')
         .del('*')
