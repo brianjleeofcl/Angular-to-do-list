@@ -1,3 +1,5 @@
+/* eslint-disable strict */
+
 'use strict';
 
 const Joi = require('joi');
@@ -32,6 +34,6 @@ module.exports.post = {
       .label('Password_Verify')
       .required()
       .trim()
-      .min(8)
-  }
+      .min(8),
+  },
 };

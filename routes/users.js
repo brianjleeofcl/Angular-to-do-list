@@ -22,10 +22,10 @@ const router = express.Router();
 
 const app = express();
 
+// eslint-disable-next-line consistent-return
 router.post('/users', ev(validations.post), (req, res, next) => {
   let user;
   const { name, email, password, password_verify, phone } = req.body;
-  console.log(req.body);
 
   if (!name || name.trim() === '') {
     return next(boom.create(400, 'Name field must not be blank'));
@@ -39,6 +39,7 @@ router.post('/users', ev(validations.post), (req, res, next) => {
     return next(boom.create(400, 'Passwords must be at least 8 characters long'));
   }
 
+  // eslint-disable-next-line camelcase
   if (!password_verify || password_verify.length < 8) {
     return next(boom.create(400, 'Passwords must be at least 8 characters long'));
   }
@@ -75,6 +76,7 @@ router.post('/users', ev(validations.post), (req, res, next) => {
   .catch(err => next(err));
 });
 
+// eslint-disable-next-line consistent-return
 app.use((err, _req, res, _next) => {
   if (err.status) {
     return res.status(err.status).send(err);
@@ -87,7 +89,7 @@ app.use((err, _req, res, _next) => {
       .set('Content-Type', 'text/plain')
       .send(err.message);
   }
-
+  // eslint-disable-next-line no-console
   console.error(err.stack);
   res.sendStatus(500);
 });

@@ -1,3 +1,5 @@
+/* eslint-disable strict */
+
 'use strict';
 
 exports.up = knex => knex.schema.createTable('tasks_tags', (table) => {
