@@ -10,7 +10,8 @@
     $li.append($input, $label);
 
     if (checked) {
-      const $p = $('<p>').text(`Completed: ${object.completedAt}`);
+      const time = moment(object.completedAt).local().calendar();
+      const $p = $('<p>').text(`Completed: ${time}`);
 
       $p.appendTo($li);
     }
