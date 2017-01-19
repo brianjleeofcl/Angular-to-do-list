@@ -44,6 +44,16 @@
     displayProgress(array.length, completed.length);
   };
 
+  const updateSharedStatus = function (data) {
+    if (data) {
+      const arr = data.map((obj) => obj.email);
+
+      $('#share-status').text(`Shared with: ${arr.join(', ')}`);
+    } else {
+      $('#share-status').text('Private tag');
+    }
+  };
+
   const cap = function(str) {
     return str[0].toUpperCase() + str.substr(1);
   };
@@ -68,9 +78,12 @@
       } else {
         $.getJSON(`/tags/${tagName}`).then((data) => {
           createCollection(data);
+          return $.getJSON(`/tags-shared?tagName=${tagName}`);
         }, (err) => {
           $('main').empty();
           $('main').text('Tag not found');
+        }).then((bool) => {
+          updateSharedStatus(bool);
         });
       }
     });

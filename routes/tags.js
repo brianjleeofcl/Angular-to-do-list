@@ -62,6 +62,22 @@ router.get('/tags/:tagName', auth, (req, res, next) => {
     .catch(err => next(err));
 });
 
+router.get('/tags-shared?', auth, (req, res, next) => {
+  console.log('check');
+  const tagName = req.query.tagName;
+  console.log(tagName);
+
+  knex('tags').where('tag_name', tagName).then((array) => {
+    if(array[0].shared) {
+      return knex('users_tags').select('email')
+        .innerJoin('users', 'users.id', 'users_tags.user_id')
+        .where('tag_id', array[0].id);
+    } else {
+      return false;
+    }
+  }).then((data) => res.send(data)).catch((error) => next(error))
+});
+
 router.delete('/task-tag', auth, (req, res, next) => {
   const { tagName, taskId } = req.body;
 
