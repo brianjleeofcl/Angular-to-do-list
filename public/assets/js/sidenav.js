@@ -1,3 +1,6 @@
+/* eslint-disable func-names, no-console, no-undef, wrap-iife,
+no-script-url, no-shadow, no-unused-vars, strict */
+
 (function () {
   'use strict';
 
@@ -41,7 +44,7 @@
       const $link = $('<a>').addClass('waves-effect')
         .text(tag).attr('href', `tag.html?tagName=${tag}`);
       const $close = $('<i>').addClass('material-icons right close')
-        .text('close')
+        .text('close');
 
       $link.append($close);
       $('<li>').append($link).appendTo($ul);
@@ -105,16 +108,16 @@
         });
       });
     }, err => err);
-  }
+  };
 
 
   $(document).on('ready', renderNav);
 
   $('body').on('click', 'i.close', (event) => {
     const tagItem = event.target.parentNode;
-    tagItem.href = 'javascript: void(0)'
+    tagItem.href = 'javascript: void(0)';
     tagItem.remove();
-    let tagName = tagItem.textContent.slice(0, -5);
+    const tagName = tagItem.textContent.slice(0, -5);
     const data = JSON.stringify({ tagName });
     const options = {
       method: 'DELETE',
@@ -127,13 +130,4 @@
       Materialize.toast('Tag removed', 1500);
     }, (error) => { console.log(error); });
   });
-
-  // We'll figure this part eventually, hopefully.
-  // $('#new-task').keyup((event) => {
-  //   if (event.which === 13) {
-  //     console.log('yup!');
-  //     renderNav()
-  //   };
-  // });
-    // });
 })();

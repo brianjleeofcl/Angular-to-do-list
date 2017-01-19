@@ -1,9 +1,11 @@
+'use strict';
+
 // eslint-disable-next-line wrap-iife, func-names,
 (function () {
   // eslint-disable-next-line lines-around-directive, strict
   'use strict';
 
-  const view = window.location.search.substr(6)
+  const view = window.location.search.substr(6);
 
   // eslint-disable-next-line func-names
   const createTag = function (tagName) {
@@ -93,7 +95,7 @@
           window.matAutocomplete = { data };
         }, (err) => {
           console.log(err);
-        })
+        });
       }
     });
   });
@@ -115,11 +117,11 @@
         method: 'POST',
         dataType: 'JSON',
         url: '/list',
-        data: JSON.stringify({ taskName, tags })
+        data: JSON.stringify({ taskName, tags }),
       };
 
       $.ajax(option).then(() => $.getJSON('/list'),
-        (err) => new Error('AJAX error'))
+        err => new Error('AJAX error'))
         .then((data) => {
           $('#all ul.collection').remove();
           $('#completed ul.collection').remove();
@@ -150,7 +152,7 @@
 
   const getArrayFromTags = function ($array) {
     return [...$array.map((_, div) => div.textContent.slice(0, -5))];
-  }
+  };
 
   $('ul').on('click', '.editButton', (event) => {
     const id = $(event.target).siblings('input').attr('id').substr(4);
@@ -194,7 +196,7 @@
           console.log(err);
         });
     }
-  })
+  });
 
   $('body').on('click', '#clear-completed', (event) => {
     $('#completed ul.collection').remove();
@@ -233,4 +235,4 @@
       console.log(err);
     });
   });
-})();
+}());

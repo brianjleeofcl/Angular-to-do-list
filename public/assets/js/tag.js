@@ -1,4 +1,7 @@
-(function() {
+/* eslint-disable func-names, no-console, no-undef,
+wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callback-err */
+
+(function () {
   'use strict';
 
   const createCollectionItem = function (object, checked) {
@@ -31,20 +34,16 @@
     const all = array.filter(obj => !obj.completedAt);
     const completed = array.filter(obj => Boolean(obj.completedAt));
 
-    const $all = all.reduce(($ul, obj) => {
-      return $ul.append(createCollectionItem(obj));
-    }, $('<ul>').addClass('collection'));
+    const $all = all.reduce(($ul, obj) => $ul.append(createCollectionItem(obj)), $('<ul>').addClass('collection'));
 
-    const $completed = completed.reduce(($ul, obj) => {
-      return $ul.append(createCollectionItem(obj, 'checked'));
-    }, $('<ul>').addClass('collection'));
+    const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')), $('<ul>').addClass('collection'));
 
     $('#all').append($all);
     $('#completed').append($completed);
     displayProgress(array.length, completed.length);
   };
 
-  const cap = function(str) {
+  const cap = function (str) {
     return str[0].toUpperCase() + str.substr(1);
   };
 
@@ -52,7 +51,7 @@
 
   $(document).on('ready', () => {
     (function () {
-      const n =  new Date();
+      const n = new Date();
       const y = n.getFullYear();
       const m = n.getMonth() + 1;
       const d = n.getDate();
@@ -78,18 +77,18 @@
     event.preventDefault();
 
     const taskName = $('#new-task-input').val();
-    const tags = [ tagName ];
+    const tags = [tagName];
     console.log(tags);
     const option = {
       contentType: 'application/json',
       method: 'POST',
       dataType: 'JSON',
       url: '/list',
-      data: JSON.stringify({ taskName, tags })
+      data: JSON.stringify({ taskName, tags }),
     };
 
     $.ajax(option).then(() => $.getJSON(`/tags/${tagName}`),
-      (err) => new Error('AJAX error'))
+      err => new Error('AJAX error'))
       .then((data) => {
         $('#all ul.collection').remove();
         $('#completed ul.collection').remove();
@@ -98,7 +97,7 @@
         // eslint-disable-next-line no-console
         console.log(err);
       });
-  })
+  });
 
   $('body').on('change', 'input[type=checkbox]', (event) => {
     const completedAt = $(event.target).prop('checked') ? new Date() : null;

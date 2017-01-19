@@ -15,13 +15,13 @@
   $('body').on('click', 'a.tag-field', (event) => {
     const $field = $('<input>').attr({
       type: 'text',
-      placeholder: 'tag:'
+      placeholder: 'tag:',
     }).addClass('autocomplete new-tag-field');
-    const $container = $('<div>').addClass('new-tags')
+    const $container = $('<div>').addClass('new-tags');
 
     $(event.target).hide();
     $(event.target).after($field, $container);
-    $field.autocomplete(window.matAutocomplete)
+    $field.autocomplete(window.matAutocomplete);
   });
 
   $('ul').on('keyup', 'input.new-tag-field', (event) => {
@@ -57,4 +57,4 @@
       console.log(err);
     });
   });
-})();
+}());
