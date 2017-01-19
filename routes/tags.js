@@ -27,13 +27,25 @@ const auth = function (req, res, next) {
 };
 
 router.get('/tags', auth, (req, res, next) => {
+  let tags = {};
+
   knex.select('tag_name').from('tags').where('user_id', req.claim.userId)
     .then((array) => {
-      const tags = camelizeKeys(array).reduce((acc, obj) => {
+      tags = camelizeKeys(array).reduce((acc, obj) => {
         acc[obj.tagName] = null;
 
         return acc;
-      }, {});
+      }, tags);
+
+      return knex('users_tags')
+        .innerJoin('tags', 'users_tags.tag_id', 'tags.id')
+        .where('users_tags.user_id', req.claim.userId).select('tag_name');
+    }).then((array) => {
+      tags = camelizeKeys(array).reduce((acc, obj) => {
+        acc[obj.tagName] = null;
+
+        return acc;
+      }, tags);
 
       res.send(tags);
     })
@@ -43,7 +55,9 @@ router.get('/tags', auth, (req, res, next) => {
 router.get('/tags/:tagName', auth, (req, res, next) => {
   const tagName = req.params.tagName.replace('%20', ' ');
 
-  knex.select('id').from('tags').where('user_id', req.claim.userId)
+  knex.select('tags.id')
+    .from('tags').innerJoin('users_tags', 'tags.id', 'users_tags.tag_id')
+    .where('users_tags.user_id', req.claim.userId)
     .where('tag_name', tagName)
     .then((array) => {
       if (!array.length) {

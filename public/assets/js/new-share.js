@@ -36,6 +36,7 @@
 
     if (!userIds.length) {
       Materialize.toast('Please add users to share', 750);
+      return;
     }
 
     const tagName = $('#add-tag').find('input').val().toLowerCase().trim();
