@@ -32,6 +32,9 @@
   const $createDropdown = function (array, str) {
     const $collapse = $('<ul>').addClass('collapsible collapsible-accordion');
     const $li = $createLI($createIconLink, str, 'arrow_drop_down');
+
+    $li.find('i').addClass('right');
+    
     const $icon = $('<i>').addClass('material-icons')
       .text(str === 'Private tags' ? 'label_outline' : 'folder_shared');
 

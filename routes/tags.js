@@ -41,11 +41,15 @@ router.get('/tags', auth, (req, res, next) => {
 });
 
 router.get('/tags/:tagName', auth, (req, res, next) => {
-  const tagName = req.params.tagName;
+  const tagName = req.params.tagName.replace('%20', ' ');
 
   knex.select('id').from('tags').where('user_id', req.claim.userId)
     .where('tag_name', tagName)
     .then((array) => {
+      if (!array.length) {
+        throw boom.notFound('Tag not found');
+      }
+
       const tagId = array[0].id;
 
       return knex('tasks_tags')

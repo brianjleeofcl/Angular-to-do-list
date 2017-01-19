@@ -62,13 +62,15 @@
     $('#tag-name').text(cap(tagName));
 
     $.getJSON('/token').then((loginStatus) => {
+      console.log(tagName);
       if (!loginStatus) {
         window.location.href = '/index.html';
       } else {
         $.getJSON(`/tags/${tagName}`).then((data) => {
           createCollection(data);
         }, (err) => {
-          console.log(err);
+          $('main').empty();
+          $('main').text('Tag not found');
         });
       }
     });
