@@ -58,7 +58,8 @@
     return str[0].toUpperCase() + str.substr(1);
   };
 
-  const tagName = window.location.search.substr(9).replace(/%20/, ' ');
+  let tagName;
+  const tagId = window.location.search.substr(7);
 
   $(document).on('ready', () => {
     (function () {
@@ -69,15 +70,14 @@
       $('#date').text(`${m}/${d}/${y}`);
     })();
 
-    $('#tag-name').text(cap(tagName));
-
     $.getJSON('/token').then((loginStatus) => {
-      console.log(tagName);
       if (!loginStatus) {
         window.location.href = '/index.html';
       } else {
-        $.getJSON(`/tags/${tagName}`).then((data) => {
-          createCollection(data);
+        $.getJSON(`/tags-id?tagId=${tagId}`).then((data) => {
+          tagName = data.tagName
+          $('#tag-name').text(cap(data.tagName));
+          createCollection(data.tasks);
           return $.getJSON(`/tags-shared?tagName=${tagName}`);
         }, (err) => {
           $('main').empty();
@@ -94,7 +94,6 @@
 
     const taskName = $('#new-task-input').val();
     const tags = [ tagName ];
-    console.log(tags);
     const option = {
       contentType: 'application/json',
       method: 'POST',
@@ -103,12 +102,15 @@
       data: JSON.stringify({ taskName, tags })
     };
 
-    $.ajax(option).then(() => $.getJSON(`/tags/${tagName}`),
+    console.log(taskName);
+
+    $.ajax(option).then(() => $.getJSON(`/tags-id?tagId=${tagId}`),
       (err) => new Error('AJAX error'))
       .then((data) => {
         $('#all ul.collection').remove();
         $('#completed ul.collection').remove();
         createCollection(data);
+        $('#new-task-input').val('');
       }, (err) => {
         // eslint-disable-next-line no-console
         console.log(err);
@@ -125,12 +127,13 @@
       contentType: 'application/json',
       data,
     };
-    $.ajax(options).then(() => $.getJSON(`/tags/${tagName}`)).then((data) => {
-      $('#all ul.collection').remove();
-      $('#completed ul.collection').remove();
-      createCollection(data);
-    }, (err) => {
-      console.log(err);
-    });
+    $.ajax(options).then(() => $.getJSON(`/tags-id?tagId=${tagId}`))
+      .then((data) => {
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
+      }, (err) => {
+        console.log(err);
+      });
   });
 })();

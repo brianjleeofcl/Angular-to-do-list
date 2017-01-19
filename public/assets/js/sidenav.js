@@ -34,7 +34,7 @@
     const $li = $createLI($createIconLink, str, 'arrow_drop_down');
 
     $li.find('i').addClass('right');
-    
+
     const $icon = $('<i>').addClass('material-icons')
       .text(str === 'Private tags' ? 'label_outline' : 'folder_shared');
 
@@ -44,7 +44,10 @@
     const $dropdown = $('<ul>');
     array.reduce(($ul, tag) => {
       const $link = $('<a>').addClass('waves-effect')
-        .text(tag).attr('href', `tag.html?tagName=${tag}`);
+        .text(tag.tagName).attr({
+          href: `tag.html?tagId=${tag.id}`,
+          data: tag.id
+        });
       const $close = $('<i>').addClass('material-icons right close')
         .text('close')
 
@@ -88,7 +91,7 @@
       if ($('nav').length) {
         $('nav').remove();
       }
-
+      console.log(data);
       $('body').prepend($createNav(data));
       $('.button-collapse').sideNav({
         closeOnclick: true,

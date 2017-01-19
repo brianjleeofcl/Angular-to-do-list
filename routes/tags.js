@@ -52,34 +52,40 @@ router.get('/tags', auth, (req, res, next) => {
   .catch(err => next(err));
 });
 
-router.get('/tags/:tagName', auth, (req, res, next) => {
-  const tagName = req.params.tagName.replace('%20', ' ');
+router.get('/tags-id?', auth, (req, res, next) => {
+  const userId = req.claim.userId;
+  const tagId = req.query.tagId;
+  let tagName;
 
-  knex.select('tags.id')
-    .from('tags').innerJoin('users_tags', 'tags.id', 'users_tags.tag_id')
-    .where('users_tags.user_id', req.claim.userId)
-    .where('tag_name', tagName)
+  knex('tags').where('id', tagId).where('user_id', userId)
     .then((array) => {
       if (!array.length) {
-        throw boom.notFound('Tag not found');
+        return knex('users_tags')
+          .innerJoin('tags', 'users_tags.tag_id', 'tags.id')
+          .where('tag_id', tagId).where('users_tags.user_id', userId);
+      } else {
+        return array;
+      }
+    })
+    .then((array) => {
+      if (!array.length) {
+        throw boom.unauthorized()
       }
 
-      const tagId = array[0].id;
+      tagName = camelizeKeys(array[0]).tagName;
 
       return knex('tasks_tags')
         .innerJoin('tasks', 'tasks_tags.task_id', 'tasks.id')
-        .where('tag_id', tagId);
+        .where('tag_id', tagId)
     })
     .then((array) => {
-      res.send(camelizeKeys(array));
+      res.send({ tasks: camelizeKeys(array), tagName });
     })
     .catch(err => next(err));
 });
 
 router.get('/tags-shared?', auth, (req, res, next) => {
-  console.log('check');
   const tagName = req.query.tagName;
-  console.log(tagName);
 
   knex('tags').where('tag_name', tagName).then((array) => {
     if(array[0].shared) {
