@@ -34,12 +34,12 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
     const all = array.filter(obj => !obj.completedAt);
     const completed = array.filter(obj => Boolean(obj.completedAt));
 
-    const $all = all.reduce(($ul, obj) => $ul.append(createCollectionItem(obj)), $('<ul>').addClass('collection'));
+    $('li.collection-item').remove();
 
-    const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')), $('<ul>').addClass('collection'));
+    const $all = all.reduce(($ul, obj) => $ul.append(createCollectionItem(obj)), $('ul#all'));
 
-    $('#all').append($all);
-    $('#completed').append($completed);
+    const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')), $('ul#completed'));
+
     displayProgress(array.length, completed.length);
   };
 

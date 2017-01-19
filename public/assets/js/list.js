@@ -68,8 +68,6 @@
     const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')),
     $('ul#completed'));
 
-    // $('#all').append($all);
-    // $('#completed').append($completed);
     displayProgress(array.length, completed.length);
   };
 
@@ -114,13 +112,13 @@
 
     const taskName = $('#new-task').find('input').val();
     const tags = getArrayFromTags($('div.new-tags').children());
-   
+
     if (taskName === '') {
       Materialize.toast('Please enter a valid task.', 4000);
 
       return;
     }
-    
+
     clearTask();
     $('.new-tags').remove();
     $('.new-tag-field').remove();
@@ -207,7 +205,7 @@
     const taskName = $(event.target).find('input').val();
     const id = $(event.target).find('input').attr('id');
     const tags = getArrayFromTags($('div.new-tags').children());
-    
+
     if (taskName === '') {
       Materialize.toast('Please enter a valid task.', 4000);
 

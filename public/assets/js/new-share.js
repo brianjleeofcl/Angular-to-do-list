@@ -49,7 +49,7 @@
     };
 
     $.ajax(options).then((data) => {
-      window.location.href = `/tag.html?tagName=${data.tagName}`;
+      window.location.href = `/tag.html?tagId=${data.tagId}`;
     }, (error) => {
       console.log(error)
     });
