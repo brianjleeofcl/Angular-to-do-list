@@ -12,6 +12,7 @@ exports.up = knex => knex.schema.createTable('tags', (table) => {
     .index();
   table.string('tag_name')
     .notNullable();
+  table.boolean('shared').notNullable().defaultTo(false);
   table.timestamps(true, true);
 });
 
