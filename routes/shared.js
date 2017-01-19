@@ -30,13 +30,14 @@ router.post('/shared', auth, (req, res, next) => {
   const { tagName, userIds } = req.body;
   const userId = req.claim.userId;
   const tag = decamelizeKeys({ userId, tagName, shared: true });
+  let tagId;
 
   knex('tags').insert(tag, '*').then((array) => {
     if (!array.length) {
       throw new Error();
     }
 
-    const tagId = array[0].id;
+    tagId = array[0].id;
 
     if (!userIds.includes(userId)) {
       userIds.push(userId);
@@ -46,7 +47,7 @@ router.post('/shared', auth, (req, res, next) => {
 
     return knex('users_tags').insert(decamelizeKeys(rows), '*')
   }).then((array) => {
-    res.send({ tagName });
+    res.send({ tagId });
   }).catch((err) => next(err));
 });
 

@@ -68,8 +68,6 @@
     const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')),
     $('ul#completed'));
 
-    // $('#all').append($all);
-    // $('#completed').append($completed);
     displayProgress(array.length, completed.length);
   };
 
@@ -150,9 +148,6 @@
       }, (err) => {
         console.log(err);
       });
-
-
-
   });
 
   $('ul').on('click', '.closeIcon', (event) => {
@@ -225,16 +220,23 @@
       data: JSON.stringify({ taskName, id, tags }),
     };
 
-    $.ajax(option).then(() => $.getJSON('/list'))
-    .then((data) => {
-      $('#all ul.collection').remove();
-      $('#completed ul.collection').remove();
-      createCollection(data);
-    }, (err) => {
-      // eslint-disable-next-line no-console
-      console.log(err);
-    });
+    $.ajax(option).then(() => $.getJSON('/list'),
+      (err) => new Error('AJAX error'))
+      .then((data) => {
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
+        return $.getJSON('/tags')
+      }).then((data) => {
+        window.tagData = { data }
+        window.matAutocomplete = { data: {} };
 
+        for (const tag in tagData.data) {
+          window.matAutocomplete.data[tag] = null;
+        }
+      }, (err) => {
+        console.log(err);
+      });
   });
 
   $('body').on('click', '#clear-completed', (event) => {

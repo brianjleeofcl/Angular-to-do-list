@@ -13,11 +13,18 @@ div.nav-wrapper
   background-color: #01579b;
 }
 
+.side-nav a
+{
+  padding: 0 15px;
+}
+
+
 #all
 {
   margin-top: 5%;
 }
 
+<<<<<<< HEAD
 #completed, #all
 {
   border-radius: 8px !important;
@@ -39,4 +46,3 @@ div.nav-wrapper
   header, main, footer {
     padding-left: 0;
   }
-}
