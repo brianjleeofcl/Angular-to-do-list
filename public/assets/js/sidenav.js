@@ -48,7 +48,7 @@
           href: `tag.html?tagId=${tag.id}`,
           data: tag.id
         });
-      const $close = $('<i>').addClass('material-icons right close')
+      const $close = $('<i>').addClass('material-icons right close sidenav')
         .text('close')
 
       $link.append($close);
@@ -120,7 +120,7 @@
 
   $(document).on('ready', renderNav);
 
-  $('body').on('click', 'i.close', (event) => {
+  $('body').on('click', 'i.close.sidenav', (event) => {
     const tagItem = event.target.parentNode;
     tagItem.href = 'javascript: void(0)'
     tagItem.remove();

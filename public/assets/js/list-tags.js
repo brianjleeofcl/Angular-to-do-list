@@ -25,6 +25,10 @@
     const $narrow = $('<div>').addClass('col s2');
     const $container = $('<div>').addClass('new-tags');
 
+    if ($(event.target).hasClass('edit')) {
+      $form.addClass('edit')
+    }
+
     $wide.append($field);
     $narrow.append($button);
     $form.append($wide, $narrow, $container);
@@ -46,14 +50,9 @@
   });
 
   $('body').on('click', '.chip .close', (event) => {
-    const taskId = $(event.target)
-      .parents('.collection-item')
-      .find('input')
-      .attr('id')
-      .substr(4);
-    const tagNameFull = $(event.target).parents('.chip').text();
-    const tagName = tagNameFull.substr(0, tagNameFull.length - 5);
-    const data = JSON.stringify({ taskId, tagName });
+    const taskId = $(event.target).parent().attr('data-task');
+    const tagId = $(event.target).parent().attr('data-tag');
+    const data = JSON.stringify({ taskId, tagId });
 
     const option = {
       dataType: 'json',

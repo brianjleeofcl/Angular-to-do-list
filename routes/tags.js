@@ -101,17 +101,9 @@ router.get('/tags-shared?', auth, (req, res, next) => {
 });
 
 router.delete('/task-tag', auth, (req, res, next) => {
-  const { tagName, taskId } = req.body;
+  const { tagId, taskId } = req.body;
 
-  knex('tags').innerJoin('tasks_tags', 'tags.id', 'tasks_tags.tag_id')
-    .where('tags.tag_name', tagName)
-    .where('tasks_tags.task_id', taskId)
-    .select('tasks_tags.id')
-    .then((array) => {
-      const id = array[0].id;
-
-      return knex('tasks_tags').where('id', id).del('*');
-    })
+  knex('tasks_tags').where('tag_id', tagId).where('task_id', taskId).del('*')
     .then((array) => {
       res.send(array[0]);
     })
