@@ -187,8 +187,19 @@
   })
 
   $('body').on('click', '#clear-completed', (event) => {
-    console.log('fuck this');
-    $('#completed').emtpy();
+    $('#completed ul.collection').remove();
+    const option = {
+      method: 'DELETE',
+      dataType: 'JSON',
+      url: '/list/completed',
+    };
+    $.ajax(option).then(() => $.getJSON('/list'))
+      .then((data) => {
+
+      }, (err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
   });
 
   $('body').on('change', 'input[type=checkbox]', (event) => {

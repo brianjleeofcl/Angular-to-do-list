@@ -115,7 +115,6 @@
     tagItem.href = 'javascript: void(0)'
     tagItem.remove();
     let tagName = tagItem.textContent.slice(0, -5);
-    console.log(tagName);
     const data = JSON.stringify({ tagName });
     const options = {
       method: 'DELETE',
@@ -125,7 +124,6 @@
     };
 
     $.ajax(options).then((data) => {
-      console.log('sent')
       Materialize.toast('Tag removed', 1500);
     }, (error) => { console.log(error); });
   });
