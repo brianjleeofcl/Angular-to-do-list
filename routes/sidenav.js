@@ -34,8 +34,10 @@ router.get('/sidenav', auth, (req, res, next) => {
     return knex('tags').where('user_id', req.claim.userId);
   })
   .then((array) => {
-    userData.tags = camelizeKeys(array).map(row => row.tagName);
-
+    userData.tags = camelizeKeys(array).filter(row => !row.shared)
+      .map(row => row.tagName);
+    userData.shared = camelizeKeys(array).filter(row => row.shared)
+      .map(row => row.tagName);
     res.send(userData);
   })
   .catch(err => next(err));

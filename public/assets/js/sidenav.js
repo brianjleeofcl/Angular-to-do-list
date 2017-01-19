@@ -29,11 +29,13 @@
     return $link;
   };
 
-  const $createDropdown = function (array) {
+  const $createDropdown = function (array, str) {
     const $collapse = $('<ul>').addClass('collapsible collapsible-accordion');
-    const $li = $createLI($createIconLink, 'Tags', 'arrow_drop_down');
+    const $li = $createLI($createIconLink, str, 'arrow_drop_down');
+    const $icon = $('<i>').addClass('material-icons')
+      .text(str === 'Private tags' ? 'label_outline' : 'folder_shared');
 
-    $li.children('a').addClass('collapsible-header');
+    $li.children('a').addClass('collapsible-header').append($icon);
 
     const $div = $('<div>').addClass('collapsible-body');
     const $dropdown = $('<ul>');
@@ -55,7 +57,7 @@
   };
 
   const $createNav = function (userData) {
-    const { name, email, tags } = userData;
+    const { name, email, tags, shared } = userData;
     const $nav = $('<nav>');
     const $divWrap = $('<div>').addClass('nav-wrapper');
     const $ul = $('<ul>').addClass('side-nav fixed').attr('id', 'slide-out');
@@ -68,7 +70,10 @@
     $ul.append($createLI($createIconLink, 'All items', 'list', '/list.html'));
     $ul.append($createLI($createIconLink, 'Completed', 'done_all', '/list.html?view=completed'));
     $ul.append($('<div>').addClass('divider'));
-    $ul.append($createLI($createDropdown, tags).addClass('no-padding'));
+    $ul.append($createLI($createDropdown, tags, 'Private tags').addClass('no-padding'));
+    $ul.append($('<div>').addClass('divider'));
+    $ul.append($createLI($createDropdown, shared, 'Shared tags').addClass('no-padding'));
+    $ul.append($createLI($createIconLink, 'Create shared tag', 'create_new_folder', '/new-shared.html'));
     $ul.append($('<div>').addClass('divider'));
     $ul.append($createLI($createIconLink, 'Log out', 'first_page').attr('id', 'log-out'));
 
@@ -106,7 +111,6 @@
       });
     }, err => err);
   }
-
 
   $(document).on('ready', renderNav);
 
