@@ -6,6 +6,7 @@
     <title>To Do</title>
     <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
     <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
+    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js" integrity="sha256-Gn7MUQono8LUxTfRA0WZzJgTua52Udm1Ifrk5421zkA=" crossorigin="anonymous"></script>
     <script defer src="/assets/js/sidenav.js" charset="utf-8"></script>
     <script defer src="/assets/js/tag.js" charset="utf-8"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
@@ -26,7 +27,10 @@
                       <div id="rate-string"></div>
                       <div class="progress"></div>
                   </li>
-                  <li class="collection-item"><input id="new-task" type="text" placeholder="Add a task"></li>
+                  <li class="collection-item"><form id="new-task">
+
+                    <input id="new-task-input" type="text" placeholder="Add a task">
+                  </form></li>
               </ul>
               <ul id="completed" class="collection with-header">
                   <li class="collection-header cyan">
