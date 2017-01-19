@@ -29,20 +29,22 @@ const auth = function (req, res, next) {
 router.get('/tags', auth, (req, res, next) => {
   let tags = {};
 
-  knex.select('tag_name').from('tags').where('user_id', req.claim.userId)
+  knex.select('tag_name', 'shared', 'id').from('tags').where('user_id', req.claim.userId)
     .then((array) => {
       tags = camelizeKeys(array).reduce((acc, obj) => {
-        acc[obj.tagName] = null;
+        const name = obj.shared ? `${obj.tagName}-shared` : obj.tagName;
+        acc[name] = obj.id;
 
         return acc;
       }, tags);
 
       return knex('users_tags')
         .innerJoin('tags', 'users_tags.tag_id', 'tags.id')
-        .where('users_tags.user_id', req.claim.userId).select('tag_name');
+        .where('users_tags.user_id', req.claim.userId)
+        .select('tag_name', 'tags.id');
     }).then((array) => {
       tags = camelizeKeys(array).reduce((acc, obj) => {
-        acc[obj.tagName] = null;
+        acc[`${obj.tagName}-shared`] = obj.id;
 
         return acc;
       }, tags);

@@ -90,7 +90,12 @@
         });
 
         $.getJSON('/tags').then((data) => {
-          window.matAutocomplete = { data };
+          window.tagData = { data }
+          window.matAutocomplete = { data: {} };
+
+          for (const tag in tagData.data) {
+            window.matAutocomplete.data[tag] = null;
+          }
         }, (err) => {
           console.log(err);
         })
@@ -100,35 +105,36 @@
 
   const clearTask = () => $('#new-task[type=text], textarea').val('');
 
-  $('#new-task').keyup((event) => {
-    const taskName = $('#new-task:focus').val();
+  $('form#new-task').submit((event) => {
+    event.preventDefault();
+
+    const taskName = $('#new-task').find('input').val();
     const tags = getArrayFromTags($('div.new-tags').children());
 
-    if (event.which === 13) {
-      clearTask();
-      $('.new-tags').remove();
-      $('.new-tag-field').remove();
-      $('a.tag-field').show();
+    clearTask();
+    $('.new-tags').remove();
+    $('.new-tag-field').remove();
+    $('a.tag-field').show();
 
-      const option = {
-        contentType: 'application/json',
-        method: 'POST',
-        dataType: 'JSON',
-        url: '/list',
-        data: JSON.stringify({ taskName, tags })
-      };
+    console.log(tags);
+    const option = {
+      contentType: 'application/json',
+      method: 'POST',
+      dataType: 'JSON',
+      url: '/list',
+      data: JSON.stringify({ taskName, tags })
+    };
 
-      $.ajax(option).then(() => $.getJSON('/list'),
-        (err) => new Error('AJAX error'))
-        .then((data) => {
-          $('#all ul.collection').remove();
-          $('#completed ul.collection').remove();
-          createCollection(data);
-        }, (err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
-    }
+    $.ajax(option).then(() => $.getJSON('/list'),
+      (err) => new Error('AJAX error'))
+      .then((data) => {
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
+      }, (err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
   });
 
   $('ul').on('click', '.closeIcon', (event) => {
@@ -149,7 +155,7 @@
   });
 
   const getArrayFromTags = function ($array) {
-    return [...$array.map((_, div) => div.textContent.slice(0, -5))];
+    return [...$array.map((_, div) => $(div).attr('data'))];
   }
 
   $('ul').on('click', '.editButton', (event) => {
