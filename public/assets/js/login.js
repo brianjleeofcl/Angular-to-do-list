@@ -1,3 +1,8 @@
+/* eslint-disable strict, func-names, no-console, array-callback-return,
+no-undef */
+
+'use strict';
+
 (function () {
   'use strict';
 
@@ -36,10 +41,10 @@
             };
 
             $.ajax(request)
+            // eslint-disable-next-line no-unused-vars
             .then((res) => { window.location.href = '/list.html'; }, (error) => { console.log(error); });
           });
         });
-
       }
     }, error => console.log('token error', error));
-})();
+}());

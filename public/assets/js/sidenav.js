@@ -1,3 +1,6 @@
+/* eslint-disable func-names, no-console, no-undef, wrap-iife,
+no-script-url, no-shadow, no-unused-vars, strict */
+
 (function () {
   'use strict';
 
@@ -65,12 +68,14 @@
   const $createNav = function (userData) {
     const { name, email, tags, shared } = userData;
     const $nav = $('<nav>');
-    const $divWrap = $('<div>').addClass('nav-wrapper');
+    const $headerLogo = $('<span>').text('Remembify')
+    .addClass('center')
+    .css('font-family', 'Roboto');
+    const $divWrap = $('<div>').addClass('nav-wrapper')
     const $ul = $('<ul>').addClass('side-nav fixed').attr('id', 'slide-out');
     const $button = $createIconLink('', 'menu')
       .attr('data-activates', 'slide-out').addClass('button-collapse');
-
-    $divWrap.append($ul, $button).appendTo($nav);
+    $divWrap.append($headerLogo, $ul, $button).appendTo($nav);
 
     $ul.append($createLI($createUserView, name, email));
     $ul.append($createLI($createIconLink, 'All items', 'list', '/list.html'));
@@ -116,16 +121,17 @@
         });
       });
     }, err => err);
-  }
+  };
 
   $(document).on('ready', renderNav);
 
   $('body').on('click', 'i.close.sidenav', (event) => {
     const tagItem = event.target.parentNode;
-    tagItem.href = 'javascript: void(0)'
+    tagItem.href = 'javascript: void(0)';
     tagItem.remove();
-    let tagId = $(tagItem).attr('data');
+    const tagId = $(tagItem).attr('data');
     const data = JSON.stringify({ tagId });
+
     const options = {
       method: 'DELETE',
       url: '/tags',
@@ -137,13 +143,4 @@
       Materialize.toast('Tag removed', 1500);
     }, (error) => { console.log(error); });
   });
-
-  // We'll figure this part eventually, hopefully.
-  // $('#new-task').keyup((event) => {
-  //   if (event.which === 13) {
-  //     console.log('yup!');
-  //     renderNav()
-  //   };
-  // });
-    // });
 })();

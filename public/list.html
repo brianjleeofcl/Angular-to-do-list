@@ -11,45 +11,41 @@
     <script defer src="/assets/js/sidenav.js" charset="utf-8"></script>
     <script defer src="/assets/js/list-tags.js" charset="utf-8"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Pacifico" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
     <link rel="stylesheet" href="/assets/list.css" media="screen">
   </head>
   <body>
     <main>
       <div class="container">
-          <div class="section">
-            <div class="divider"></div>
-            <div class="col s12">
-              <ul id="all" class="collection with-header">
-                  <li class="collection-header cyan">
-                      <h4 class="task-card-title">All Tasks List</h4>
-                      <p id="date"></p>
-                      <div id="rate-string"></div>
-                      <div class="progress"></div>
-                  </li>
-                  <li class="collection-item">
-                    <form id="new-task"class="row">
+        <div class="col s12">
+          <ul id="all" class="collection with-header">
+              <li class="collection-header cyan">
+                  <h4 class="task-card-title">All Tasks List</h4>
+                  <p id="date"></p>
+                  <div id="rate-string"></div>
+                  <div class="progress"></div>
+              </li>
+              <li class="collection-header"><div>
+                <form id="new-task"class="row">
                       <div class="col s10">
                         <input type="text" placeholder="Add a task">
                       </div>
                       <div class="col s2">
                         <button type="submit" class="btn">Add task</button>
                       </div>
-                    </form>
-                    <a class="tag-field">Click to add tags</a>
-                  </li>
-              </ul>
-              <ul id="completed" class="collection with-header">
-                  <li class="collection-header cyan">
-                      <h4 class="task-card-title">Completed Task List</h4>
-                      <a id="clear-completed" class="waves-effect waves-light btn">Clear</a>
-                  </li>
-              </ul>
-          </div>
-          </div>
+                    </form>                
+                  <a class="tag-field">Click to add tags</a></div>
+              </li>
+          </ul>
+          <ul id="completed" class="collection with-header">
+              <li class="collection-header cyan">
+                  <h4 class="task-card-title">Completed Task List</h4>
+                  <a id="clear-completed" class="waves-effect waves-light btn">Clear</a>
+              </li>
+          </ul>
         </div>
-      </section>
+      </div>
     </main>
   </body>
 </html>

@@ -1,9 +1,11 @@
+'use strict';
+
 // eslint-disable-next-line wrap-iife, func-names,
 (function () {
   // eslint-disable-next-line lines-around-directive, strict
   'use strict';
 
-  const view = window.location.search.substr(6)
+  const view = window.location.search.substr(6);
 
   // eslint-disable-next-line func-names
   const createTag = function (tagName, taskId) {
@@ -58,14 +60,16 @@
     const all = array.filter(obj => !obj.completedAt);
     const completed = array.filter(obj => Boolean(obj.completedAt));
 
+    $('li.collection-item').remove()
+
     const $all = all.reduce(($ul, obj) => $ul.append(createCollectionItem(obj)),
-    $('<ul>').addClass('collection'));
+    $('ul#all'));
 
     const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')),
-    $('<ul>').addClass('collection'));
+    $('ul#completed'));
 
-    $('#all').append($all);
-    $('#completed').append($completed);
+    // $('#all').append($all);
+    // $('#completed').append($completed);
     displayProgress(array.length, completed.length);
   };
 
@@ -110,7 +114,13 @@
 
     const taskName = $('#new-task').find('input').val();
     const tags = getArrayFromTags($('div.new-tags').children());
+   
+    if (taskName === '') {
+      Materialize.toast('Please enter a valid task.', 4000);
 
+      return;
+    }
+    
     clearTask();
     $('.new-tags').remove();
     $('.new-tag-field').remove();
@@ -142,6 +152,9 @@
       }, (err) => {
         console.log(err);
       });
+
+
+
   });
 
   $('ul').on('click', '.closeIcon', (event) => {
@@ -162,6 +175,7 @@
   });
 
   const getArrayFromTags = function ($array) {
+
     return [...$array.map((_, div) => $(div).attr('data'))];
   }
 
@@ -193,6 +207,12 @@
     const taskName = $(event.target).find('input').val();
     const id = $(event.target).find('input').attr('id');
     const tags = getArrayFromTags($('div.new-tags').children());
+    
+    if (taskName === '') {
+      Materialize.toast('Please enter a valid task.', 4000);
+
+      return;
+    }
 
     clearTask();
     $('.new-tags').remove();
@@ -216,6 +236,7 @@
       // eslint-disable-next-line no-console
       console.log(err);
     });
+
   });
 
   $('body').on('click', '#clear-completed', (event) => {
@@ -255,4 +276,4 @@
       console.log(err);
     });
   });
-})();
+}());

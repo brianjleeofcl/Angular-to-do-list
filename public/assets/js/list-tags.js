@@ -18,7 +18,7 @@
     const $form = $('<form>').attr('id', 'new-tag').addClass('row');
     const $field = $('<input>').attr({
       type: 'text',
-      placeholder: 'tag:'
+      placeholder: 'tag:',
     }).addClass('autocomplete new-tag-field');
     const $button = $('<button>').attr('type', 'submit').addClass('btn').text('add tag');
     const $wide = $('<div>').addClass('col s10');
@@ -35,6 +35,7 @@
 
     $(event.target).hide();
     $(event.target).after($form);
+
     $field.autocomplete(window.matAutocomplete);
   });
 
@@ -68,4 +69,4 @@
       console.log(err);
     });
   });
-})();
+}());
