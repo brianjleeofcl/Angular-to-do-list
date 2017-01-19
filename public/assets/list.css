@@ -1,13 +1,42 @@
+
 header, main, footer {
   padding-left: 300px;
 }
 
-@media only screen and (max-width : 992px) {
+h4
+{
+  color: white;
+}
+
+div.nav-wrapper
+{
+  background-color: #01579b;
+}
+
+#all
+{
+  margin-top: 5%;
+}
+
+#completed, #all
+{
+  border-radius: 8px !important;
+  border: 1px solid black;
+}
+
+#date
+{
+  color: white;
+}
+
+#rate-string
+{
+  color: white;
+}
+
+@media only screen and (max-width : 992px)
+{
   header, main, footer {
     padding-left: 0;
   }
-}
-
-#all {
-  margin-top: 5%;
 }

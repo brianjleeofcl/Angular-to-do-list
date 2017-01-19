@@ -107,26 +107,24 @@
     });
   });
 
-  const clearTask = () => $('#new-task[type=text], textarea').val('');
+  const clearTask = () => $('#task-input[type=text], textarea').val('');
 
   $('form#new-task').submit((event) => {
     event.preventDefault();
 
     const taskName = $('#new-task').find('input').val();
     const tags = getArrayFromTags($('div.new-tags').children());
-   
+
     if (taskName === '') {
       Materialize.toast('Please enter a valid task.', 4000);
 
       return;
     }
-    
+
     clearTask();
-    $('.new-tags').remove();
-    $('.new-tag-field').remove();
+    $('#new-tag').remove();
     $('a.tag-field').show();
 
-    console.log(tags);
     const option = {
       contentType: 'application/json',
       method: 'POST',
@@ -207,7 +205,7 @@
     const taskName = $(event.target).find('input').val();
     const id = $(event.target).find('input').attr('id');
     const tags = getArrayFromTags($('div.new-tags').children());
-    
+
     if (taskName === '') {
       Materialize.toast('Please enter a valid task.', 4000);
 
