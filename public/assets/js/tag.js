@@ -66,18 +66,39 @@
         window.location.href = '/index.html';
       } else {
         $.getJSON(`/tags/${tagName}`).then((data) => {
-          if (data.length) {
-            console.log(data.length);
-            createCollection(data);
-          } else {
-
-          }
+          createCollection(data);
         }, (err) => {
           console.log(err);
         });
       }
     });
   });
+
+  $('form#new-task').submit((event) => {
+    event.preventDefault();
+
+    const taskName = $('#new-task-input').val();
+    const tags = [ tagName ];
+    console.log(tags);
+    const option = {
+      contentType: 'application/json',
+      method: 'POST',
+      dataType: 'JSON',
+      url: '/list',
+      data: JSON.stringify({ taskName, tags })
+    };
+
+    $.ajax(option).then(() => $.getJSON(`/tags/${tagName}`),
+      (err) => new Error('AJAX error'))
+      .then((data) => {
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
+      }, (err) => {
+        // eslint-disable-next-line no-console
+        console.log(err);
+      });
+  })
 
   $('body').on('change', 'input[type=checkbox]', (event) => {
     const completedAt = $(event.target).prop('checked') ? new Date() : null;
