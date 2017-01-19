@@ -51,7 +51,7 @@ router.post('/list', auth, (req, res, next) => {
   const { taskName, tags } = req.body;
   const task = { taskName, userId };
   // eslint-disable-next-line no-unused-vars
-  const tagIds = [];
+  let tagIds = [];
   let taskId;
   let addedTask;
 
@@ -60,11 +60,13 @@ router.post('/list', auth, (req, res, next) => {
     .then((row) => {
       taskId = camelizeKeys(row[0]).id;
       addedTask = camelizeKeys(row[0]);
-      tagIds = tagIds.concat(tag.filter((item) => !Array.isArray(item)));
+      tagIds = tagIds.concat(tags.filter((str) => str.match(/\d+/)));
 
-      const promises = tags.filter((item) => Array.isArray(item))
-        .map((arrayTagname) => {
-          const tagName = arrayTagname[0]
+      const promises = tags.filter((str) => {
+        return str.match(/^n-/);
+      })
+        .map((str) => {
+          const tagName = str.slice(2)
           return knex('tags')
             .insert(decamelizeKeys({ userId, tagName }), 'id')
             .then((array) => array[0])
@@ -73,6 +75,7 @@ router.post('/list', auth, (req, res, next) => {
       return Promise.all(promises)
     }).then((arr) => {
       tagIds = tagIds.concat(arr)
+      
       const rows = decamelizeKeys(tagIds.map((tagId) => {
         return { tagId, taskId }
       }));

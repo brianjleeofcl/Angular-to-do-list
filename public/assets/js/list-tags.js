@@ -2,7 +2,7 @@
   'use strict';
 
   const createTag = function (tagName) {
-    const tagId = window.tagData.data[tagName] || JSON.stringify([ tagName ])
+    const tagId = window.tagData.data[tagName] || `n-${tagName}`;
     const $tag = $('<div>').text(tagName).addClass('chip right')
       .attr('data', tagId);
     const $close = $('<i>').addClass('close material-icons').text('close');
