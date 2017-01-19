@@ -51,7 +51,7 @@ router.post('/list', auth, (req, res, next) => {
   const { taskName, tags } = req.body;
   const task = { taskName, userId };
   // eslint-disable-next-line no-unused-vars
-  const tagIds = [];
+  let tagIds = [];
   let taskId;
   let addedTask;
 
@@ -60,20 +60,25 @@ router.post('/list', auth, (req, res, next) => {
     .then((row) => {
       taskId = camelizeKeys(row[0]).id;
       addedTask = camelizeKeys(row[0]);
+      tagIds = tagIds.concat(tags.filter((str) => str.match(/\d+/)));
 
-      const promises = tags.map(tagName => knex('tags')
-          .where(decamelizeKeys({ tagName, userId })).then((array) => {
-            if (array.length) {
-              return array[0].id;
-            }
-            return knex('tags')
-              .insert(decamelizeKeys({ userId, tagName }), 'id')
-              .then(array => array[0]);
-          }));
+      const promises = tags.filter((str) => {
+        return str.match(/^n-/);
+      })
+        .map((str) => {
+          const tagName = str.slice(2)
+          return knex('tags')
+            .insert(decamelizeKeys({ userId, tagName }), 'id')
+            .then((array) => array[0])
+        });
 
-      return Promise.all(promises);
+      return Promise.all(promises)
     }).then((arr) => {
-      const rows = decamelizeKeys(arr.map(tagId => ({ tagId, taskId })));
+      tagIds = tagIds.concat(arr)
+
+      const rows = decamelizeKeys(tagIds.map((tagId) => {
+        return { tagId, taskId }
+      }));
 
       return knex('tasks_tags').insert(rows, '*');
     })
@@ -87,10 +92,12 @@ router.post('/list', auth, (req, res, next) => {
 
 router.patch('/list', auth, (req, res, next) => {
   const id = req.body.id;
+  let tagIds = [];
+  let patchedTask;
 
   knex('tasks').where('id', id).then((array) => {
     if (!array.length) {
-      throw new Error();
+      throw boom.notFound();
     } else {
       const row = {
         taskName: req.body.taskName || array[0].taskName,
@@ -103,31 +110,37 @@ router.patch('/list', auth, (req, res, next) => {
   }).then((array) => {
     const userId = req.claim.userId;
     const tags = req.body.tags || [];
+    patchedTask = camelizeKeys(array[0]);
 
     if (!tags.length) {
-      res.send(array[0]);
+      return res.send(patchedTask);
     }
 
-    const promises = tags.map(tagName => knex('tags').where(decamelizeKeys({ userId, tagName }))
-        .then((array) => {
-          if (array.length) {
-            return array[0].id;
-          }
+    tagIds = tagIds.concat(tags.filter((str) => str.match(/\d+/)));
 
-          return knex('tags')
-            .insert(decamelizeKeys({ userId, tagName }), 'id')
-            .then(array => array[0]);
-        }));
+    const promises = tags.filter((str) => {
+      return str.match(/^n-/);
+    })
+      .map((str) => {
+        const tagName = str.slice(2)
+        return knex('tags')
+          .insert(decamelizeKeys({ userId, tagName }), 'id')
+          .then((array) => array[0])
+      });
 
-    return Promise.all(promises);
+    return Promise.all(promises)
   })
   .then((arr) => {
-    const rows = decamelizeKeys(arr.map(tagId => ({ tagId, taskId: id })));
+    tagIds = tagIds.concat(arr)
+
+    const rows = decamelizeKeys(tagIds.map(tagId => {
+      return { tagId, taskId: patchedTask.id }
+    }));
 
     return knex('tasks_tags').insert(rows, '*');
   })
-  .then((array) => {
-    res.send(camelizeKeys(array[0]));
+  .then(() => {
+    res.send(camelizeKeys(patchedTask));
   })
   .catch(err => next(err));
 });

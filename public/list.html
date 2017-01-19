@@ -27,10 +27,15 @@
                   <div class="progress"></div>
               </li>
               <li class="collection-header"><div>
-                <input id="new-task" type="text" placeholder="Add a task">
-                <a class="tag-field">Click to add tags</a></div>
-                <a id="createTask" class="waves-effect waves-light btn">Create Task</a>
-                <!-- <div class="new-tags"></div> -->
+                <form id="new-task"class="row">
+                      <div class="col s10">
+                        <input type="text" placeholder="Add a task">
+                      </div>
+                      <div class="col s2">
+                        <button type="submit" class="btn">Add task</button>
+                      </div>
+                    </form>                
+                  <a class="tag-field">Click to add tags</a></div>
               </li>
           </ul>
           <ul id="completed" class="collection with-header">

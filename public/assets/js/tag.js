@@ -43,11 +43,23 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
     displayProgress(array.length, completed.length);
   };
 
-  const cap = function (str) {
+  const updateSharedStatus = function (data) {
+    if (data) {
+      const arr = data.map((obj) => obj.email);
+
+      $('#share-status').text(`Shared with: ${arr.join(', ')}`);
+    } else {
+      $('#share-status').text('Private tag');
+    }
+  };
+
+  const cap = function(str) {
+
     return str[0].toUpperCase() + str.substr(1);
   };
 
-  const tagName = window.location.search.substr(9).replace(/%20/, ' ');
+  let tagName;
+  const tagId = window.location.search.substr(7);
 
   $(document).on('ready', () => {
     (function () {
@@ -58,16 +70,20 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
       $('#date').text(`${m}/${d}/${y}`);
     })();
 
-    $('#tag-name').text(cap(tagName));
-
     $.getJSON('/token').then((loginStatus) => {
       if (!loginStatus) {
         window.location.href = '/index.html';
       } else {
-        $.getJSON(`/tags/${tagName}`).then((data) => {
-          createCollection(data);
+        $.getJSON(`/tags-id?tagId=${tagId}`).then((data) => {
+          tagName = data.tagName
+          $('#tag-name').text(cap(data.tagName));
+          createCollection(data.tasks);
+          return $.getJSON(`/tags-shared?tagName=${tagName}`);
         }, (err) => {
-          console.log(err);
+          $('main').empty();
+          $('main').text('Tag not found');
+        }).then((bool) => {
+          updateSharedStatus(bool);
         });
       }
     });
@@ -77,8 +93,8 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
     event.preventDefault();
 
     const taskName = $('#new-task-input').val();
-    const tags = [tagName];
-    console.log(tags);
+    const tags = [ tagName ];
+
     const option = {
       contentType: 'application/json',
       method: 'POST',
@@ -87,12 +103,14 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
       data: JSON.stringify({ taskName, tags }),
     };
 
-    $.ajax(option).then(() => $.getJSON(`/tags/${tagName}`),
-      err => new Error('AJAX error'))
+    $.ajax(option).then(() => $.getJSON(`/tags-id?tagId=${tagId}`),
+      (err) => new Error('AJAX error'))
+
       .then((data) => {
         $('#all ul.collection').remove();
         $('#completed ul.collection').remove();
         createCollection(data);
+        $('#new-task-input').val('');
       }, (err) => {
         // eslint-disable-next-line no-console
         console.log(err);
@@ -109,12 +127,13 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
       contentType: 'application/json',
       data,
     };
-    $.ajax(options).then(() => $.getJSON(`/tags/${tagName}`)).then((data) => {
-      $('#all ul.collection').remove();
-      $('#completed ul.collection').remove();
-      createCollection(data);
-    }, (err) => {
-      console.log(err);
-    });
+    $.ajax(options).then(() => $.getJSON(`/tags-id?tagId=${tagId}`))
+      .then((data) => {
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
+      }, (err) => {
+        console.log(err);
+      });
   });
 })();

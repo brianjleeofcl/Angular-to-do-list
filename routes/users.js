@@ -23,6 +23,24 @@ const router = express.Router();
 const app = express();
 
 // eslint-disable-next-line consistent-return
+const auth = function (req, res, next) {
+  jwt.verify(req.cookies.token, process.env.JWT_KEY, (err, payload) => {
+    if (err) {
+      return next(err);
+    }
+
+    req.claim = payload;
+
+    next();
+  });
+};
+
+router.get('/users/check?', auth, (req, res, next) => {
+  knex('users').where('email', req.query.email).then((array) => {
+    res.send(array.length ? JSON.stringify({ id: array[0].id }) : false);
+  }).catch((err) => next(err))
+})
+
 router.post('/users', ev(validations.post), (req, res, next) => {
   let user;
   const { name, email, password, password_verify, phone } = req.body;

@@ -8,8 +8,12 @@
   const view = window.location.search.substr(6);
 
   // eslint-disable-next-line func-names
-  const createTag = function (tagName) {
-    const $tag = $('<div>').text(tagName).addClass('chip right');
+  const createTag = function (tagName, taskId) {
+    const $tag = $('<div>').text(tagName).addClass('chip right')
+      .attr({
+        'data-tag': window.tagData.data[tagName] || window.tagData.data[`${tagName}-shared`],
+        'data-task': taskId
+      });
     const $close = $('<i>').addClass('close material-icons').text('close');
 
     return $tag.append($close);
@@ -28,7 +32,7 @@
 
     $li.append($input, $label, $editIcon, $closeIcon);
     object.tags.reduce(($target, str) => {
-      $target.append(createTag(str));
+      $target.append(createTag(str, object.id));
 
       return $target;
     }, $li);
@@ -87,14 +91,15 @@
       if (!loginStatus) {
         window.location.href = '/index.html';
       } else {
-        $.getJSON('/list').then((data) => {
-          createCollection(data);
-        }, (err) => {
-          console.log(err);
-        });
+        jQuery.when($.getJSON('/list'), $.getJSON('/tags'))
+          .then((list, tags) => {
+          window.tagData = { data: tags[0] }
+          window.matAutocomplete = { data: {} };
 
-        $.getJSON('/tags').then((data) => {
-          window.matAutocomplete = { data };
+          for (const tag in tagData.data) {
+            window.matAutocomplete.data[tag] = null;
+          }
+          createCollection(list[0]);
         }, (err) => {
           console.log(err);
         });
@@ -104,41 +109,52 @@
 
   const clearTask = () => $('#new-task[type=text], textarea').val('');
 
-  $('#new-task').keyup((event) => {
-    const taskName = $('#new-task:focus').val();
-    const tags = getArrayFromTags($('div.new-tags').children());
+  $('form#new-task').submit((event) => {
+    event.preventDefault();
 
+    const taskName = $('#new-task').find('input').val();
+    const tags = getArrayFromTags($('div.new-tags').children());
+   
     if (taskName === '') {
       Materialize.toast('Please enter a valid task.', 4000);
 
       return;
     }
+    
+    clearTask();
+    $('.new-tags').remove();
+    $('.new-tag-field').remove();
+    $('a.tag-field').show();
 
-    if (event.which === 13) {
-      clearTask();
-      $('.new-tags').remove();
-      $('.new-tag-field').remove();
-      $('a.tag-field').show();
+    console.log(tags);
+    const option = {
+      contentType: 'application/json',
+      method: 'POST',
+      dataType: 'JSON',
+      url: '/list',
+      data: JSON.stringify({ taskName, tags })
+    };
 
-      const option = {
-        contentType: 'application/json',
-        method: 'POST',
-        dataType: 'JSON',
-        url: '/list',
-        data: JSON.stringify({ taskName, tags }),
-      };
+    $.ajax(option).then(() => $.getJSON('/list'),
+      (err) => new Error('AJAX error'))
+      .then((data) => {
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
+        return $.getJSON('/tags')
+      }).then((data) => {
+        window.tagData = { data }
+        window.matAutocomplete = { data: {} };
 
-      $.ajax(option).then(() => $.getJSON('/list'),
-        err => new Error('AJAX error'))
-        .then((data) => {
-          $('#all ul.collection').remove();
-          $('#completed ul.collection').remove();
-          createCollection(data);
-        }, (err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
-    }
+        for (const tag in tagData.data) {
+          window.matAutocomplete.data[tag] = null;
+        }
+      }, (err) => {
+        console.log(err);
+      });
+
+
+
   });
 
   $('ul').on('click', '.closeIcon', (event) => {
@@ -159,51 +175,68 @@
   });
 
   const getArrayFromTags = function ($array) {
-    return [...$array.map((_, div) => div.textContent.slice(0, -5))];
-  };
+
+    return [...$array.map((_, div) => $(div).attr('data'))];
+  }
 
   $('ul').on('click', '.editButton', (event) => {
+    $('form.edit').siblings(':hidden').show();
+    $('.edit').remove();
+
     const id = $(event.target).siblings('input').attr('id').substr(4);
     const $target = $(event.target).siblings('label');
     const label = $target.text();
-    const $input = $('<input>').attr({ type: 'text', id })
-      .addClass('edit').val(label);
+    const $form = $('<form>').addClass('edit row patch')
+    const $button = $('<button>').attr('type', 'submit').addClass('btn').text('save');
+    const $wide = $('<div>').addClass('col s10');
+    const $narrow = $('<div>').addClass('col s2');
+    const $input = $('<input>').attr({ type: 'text', id }).val(label);
     const $addTag = $('<a>').addClass('tag-field edit').text('Click to add tags');
 
-    $target.replaceWith($input);
-    $input.after($addTag);
+    $wide.append($input);
+    $narrow.append($button);
+    $form.append($wide, $narrow);
+    $target.after($form, $addTag);
+    $target.hide();
     $addTag.nextAll().hide();
   });
 
-  $('ul').on('keyup', 'input.edit', (event) => {
-    const taskName = $('input.edit:focus').val();
-    const id = $('input.edit:focus').attr('id');
+  $('ul').on('submit', 'form.patch', (event) => {
+    event.preventDefault();
+
+    const taskName = $(event.target).find('input').val();
+    const id = $(event.target).find('input').attr('id');
     const tags = getArrayFromTags($('div.new-tags').children());
+    
+    if (taskName === '') {
+      Materialize.toast('Please enter a valid task.', 4000);
 
-    if (event.which === 13) {
-      clearTask();
-      $('.new-tags').remove();
-      $('.new-tag-field').remove();
-      $('a.tag-field.edit').remove();
-
-      const option = {
-        contentType: 'application/json',
-        method: 'PATCH',
-        dataType: 'JSON',
-        url: '/list',
-        data: JSON.stringify({ taskName, id, tags }),
-      };
-
-      $.ajax(option).then(() => $.getJSON('/list'))
-        .then((data) => {
-          $('#all ul.collection').remove();
-          $('#completed ul.collection').remove();
-          createCollection(data);
-        }, (err) => {
-          // eslint-disable-next-line no-console
-          console.log(err);
-        });
+      return;
     }
+
+    clearTask();
+    $('.new-tags').remove();
+    $('.new-tag-field').remove();
+    $('a.tag-field.edit').remove();
+
+    const option = {
+      contentType: 'application/json',
+      method: 'PATCH',
+      dataType: 'JSON',
+      url: '/list',
+      data: JSON.stringify({ taskName, id, tags }),
+    };
+
+    $.ajax(option).then(() => $.getJSON('/list'))
+    .then((data) => {
+      $('#all ul.collection').remove();
+      $('#completed ul.collection').remove();
+      createCollection(data);
+    }, (err) => {
+      // eslint-disable-next-line no-console
+      console.log(err);
+    });
+
   });
 
   $('body').on('click', '#clear-completed', (event) => {
