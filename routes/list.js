@@ -171,7 +171,6 @@ router.delete('/list', auth, (req, res, next) => {
 router.delete('/list/completed', auth, (req, res, next) => {
   const userId = req.claim.userId;
   const clause = { userId };
-  let completed;
 
   knex('tasks')
     .whereNotNull('completed_at')
@@ -179,7 +178,7 @@ router.delete('/list/completed', auth, (req, res, next) => {
     .del('*')
     .then((row) => {
       if (!row) {
-        throw boom.create(404, 'Internal Server Error');
+        throw boom.create(500, 'Internal Server Error');
       }
       res.send(row);
     })
