@@ -56,14 +56,16 @@
     const all = array.filter(obj => !obj.completedAt);
     const completed = array.filter(obj => Boolean(obj.completedAt));
 
+    $('li.collection-item').remove()
+
     const $all = all.reduce(($ul, obj) => $ul.append(createCollectionItem(obj)),
-    $('<ul>').addClass('collection'));
+    $('ul#all'));
 
     const $completed = completed.reduce(($ul, obj) => $ul.append(createCollectionItem(obj, 'checked')),
-    $('<ul>').addClass('collection'));
+    $('ul#completed'));
 
-    $('#all').append($all);
-    $('#completed').append($completed);
+    // $('#all').append($all);
+    // $('#completed').append($completed);
     displayProgress(array.length, completed.length);
   };
 
@@ -105,6 +107,12 @@
   $('#new-task').keyup((event) => {
     const taskName = $('#new-task:focus').val();
     const tags = getArrayFromTags($('div.new-tags').children());
+
+    if (taskName === '') {
+      Materialize.toast('Please enter a valid task.', 4000);
+
+      return;
+    }
 
     if (event.which === 13) {
       clearTask();

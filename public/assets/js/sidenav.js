@@ -60,12 +60,14 @@ no-script-url, no-shadow, no-unused-vars, strict */
   const $createNav = function (userData) {
     const { name, email, tags } = userData;
     const $nav = $('<nav>');
-    const $divWrap = $('<div>').addClass('nav-wrapper');
+    const $headerLogo = $('<span>').text('Remembify')
+    .addClass('center')
+    .css('font-family', 'Roboto');
+    const $divWrap = $('<div>').addClass('nav-wrapper')
     const $ul = $('<ul>').addClass('side-nav fixed').attr('id', 'slide-out');
     const $button = $createIconLink('', 'menu')
       .attr('data-activates', 'slide-out').addClass('button-collapse');
-
-    $divWrap.append($ul, $button).appendTo($nav);
+    $divWrap.append($headerLogo, $ul, $button).appendTo($nav);
 
     $ul.append($createLI($createUserView, name, email));
     $ul.append($createLI($createIconLink, 'All items', 'list', '/list.html'));
