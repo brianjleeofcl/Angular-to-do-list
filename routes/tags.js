@@ -113,12 +113,12 @@ router.delete('/task-tag', auth, (req, res, next) => {
 // Deletes a tag separately from any task association.
 router.delete('/tags', auth, (req, res, next) => {
   const userId = req.claim.userId;
-  const { tagName } = req.body;
+  const { tagId } = req.body;
   let tag;
 
   knex('tags')
     .where('user_id', userId)
-    .where('tag_name', tagName)
+    .where('id', tagId)
     .first()
     .then((row) => {
       if (!row) {
@@ -128,7 +128,7 @@ router.delete('/tags', auth, (req, res, next) => {
 
       return knex('tags')
         .del('*')
-        .where('tag_name', tag.tagName);
+        .where('id', tagId);
     })
     .then(() => {
       delete tag.id;

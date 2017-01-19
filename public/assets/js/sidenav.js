@@ -124,8 +124,8 @@
     const tagItem = event.target.parentNode;
     tagItem.href = 'javascript: void(0)'
     tagItem.remove();
-    let tagName = tagItem.textContent.slice(0, -5);
-    const data = JSON.stringify({ tagName });
+    let tagId = $(tagItem).attr('data');
+    const data = JSON.stringify({ tagId });
     const options = {
       method: 'DELETE',
       url: '/tags',
