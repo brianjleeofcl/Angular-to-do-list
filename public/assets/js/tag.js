@@ -89,7 +89,7 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
     event.preventDefault();
 
     const taskName = $('#new-task-input').val();
-    const tags = [ tagName ];
+    const tags = [ window.location.search.substr(7) ];
 
     const option = {
       contentType: 'application/json',
@@ -101,11 +101,10 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
 
     $.ajax(option).then(() => $.getJSON(`/tags-id?tagId=${tagId}`),
       (err) => new Error('AJAX error'))
-
       .then((data) => {
         $('#all ul.collection').remove();
         $('#completed ul.collection').remove();
-        createCollection(data);
+        createCollection(data.tasks);
         $('#new-task-input').val('');
       }, (err) => {
         // eslint-disable-next-line no-console
@@ -127,7 +126,7 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
       .then((data) => {
         $('#all ul.collection').remove();
         $('#completed ul.collection').remove();
-        createCollection(data);
+        createCollection(data.tasks);
       }, (err) => {
         console.log(err);
       });

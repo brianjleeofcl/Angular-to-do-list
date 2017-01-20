@@ -51,7 +51,7 @@ router.get('/list', auth, (req, res, next) => {
           key.push(obj.id);
         }
       }
-      
+
       const promises = array.map(obj => knex('tasks_tags')
           .innerJoin('tags', 'tasks_tags.tag_id', 'tags.id')
           .where('tasks_tags.task_id', obj.id)
