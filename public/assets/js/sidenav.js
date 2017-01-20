@@ -123,7 +123,6 @@ no-script-url, no-shadow, no-unused-vars, strict */
     }, err => err);
   };
   renderNav()
-  // $(document).on('ready', renderNav);
 
   $('body').on('click', 'i.close.sidenav', (event) => {
     const tagItem = event.target.parentNode;
