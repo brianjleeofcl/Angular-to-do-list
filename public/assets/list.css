@@ -1,17 +1,48 @@
+
 header, main, footer {
   padding-left: 300px;
 }
 
-@media only screen and (max-width : 992px) {
-  header, main, footer {
-    padding-left: 0;
-  }
+h4
+{
+  color: white;
 }
 
-#all {
+div.nav-wrapper
+{
+  background-color: #01579b;
+}
+
+.side-nav a
+{
+  padding: 0 15px;
+}
+
+
+#all
+{
   margin-top: 5%;
 }
 
-.side-nav a {
-  padding: 0 15px;
+<<<<<<< HEAD
+#completed, #all
+{
+  border-radius: 8px !important;
+  border: 1px solid black;
 }
+
+#date
+{
+  color: white;
+}
+
+#rate-string
+{
+  color: white;
+}
+
+@media only screen and (max-width : 992px)
+{
+  header, main, footer {
+    padding-left: 0;
+  }

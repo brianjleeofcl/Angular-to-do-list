@@ -105,7 +105,7 @@
     });
   });
 
-  const clearTask = () => $('#new-task[type=text], textarea').val('');
+  const clearTask = () => $('#task-input[type=text], textarea').val('');
 
   $('form#new-task').submit((event) => {
     event.preventDefault();
@@ -120,11 +120,9 @@
     }
 
     clearTask();
-    $('.new-tags').remove();
-    $('.new-tag-field').remove();
+    $('#new-tag').remove();
     $('a.tag-field').show();
 
-    console.log(tags);
     const option = {
       contentType: 'application/json',
       method: 'POST',

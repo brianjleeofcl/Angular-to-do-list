@@ -20,10 +20,10 @@
       type: 'text',
       placeholder: 'tag:',
     }).addClass('autocomplete new-tag-field');
-    const $button = $('<button>').attr('type', 'submit').addClass('btn').text('add tag');
+    const $button = $('<button>').attr('type', 'submit').addClass('btn edit').text('add tag');
     const $wide = $('<div>').addClass('col s10');
     const $narrow = $('<div>').addClass('col s2');
-    const $container = $('<div>').addClass('new-tags');
+    const $container = $('<div>').addClass('new-tags col s12');
 
     if ($(event.target).hasClass('edit')) {
       $form.addClass('edit')
@@ -43,9 +43,12 @@
 
   $('ul').on('submit', 'form#new-tag', (event) => {
     event.preventDefault();
-
     const tagName = $(event.target).find('input').val().toLowerCase().trim();
+    if (tagName === '') {
+      Materialize.toast('Please create a valid tag filter', 4000);
 
+      return;
+    }
     $('.new-tags').append(createTag(tagName));
     clearInput();
   });

@@ -10,7 +10,7 @@ no-script-url, no-shadow, no-unused-vars, strict */
 
   const $createUserView = function (name, email) {
     const $outer = $('<div>').addClass('userView');
-    const $inner = $('<div>').addClass('background blue-grey');
+    const $inner = $('<div>').addClass('background light-blue darken-4');
     const $name = $('<span>').text(name)
       .addClass('white-text name');
     const $email = $('<span>').text(email).addClass('white-text');
@@ -49,10 +49,10 @@ no-script-url, no-shadow, no-unused-vars, strict */
       const $link = $('<a>').addClass('waves-effect')
         .text(tag.tagName).attr({
           href: `tag.html?tagId=${tag.id}`,
-          data: tag.id
+          data: tag.id,
         });
       const $close = $('<i>').addClass('material-icons right close sidenav')
-        .text('close')
+        .text('close');
 
       $link.append($close);
       $('<li>').append($link).appendTo($ul);
@@ -71,7 +71,7 @@ no-script-url, no-shadow, no-unused-vars, strict */
     const $headerLogo = $('<span>').text('Remembify')
     .addClass('center')
     .css('font-family', 'Roboto');
-    const $divWrap = $('<div>').addClass('nav-wrapper')
+    const $divWrap = $('<div>').addClass('nav-wrapper');
     const $ul = $('<ul>').addClass('side-nav fixed').attr('id', 'slide-out');
     const $button = $createIconLink('', 'menu')
       .attr('data-activates', 'slide-out').addClass('button-collapse');
