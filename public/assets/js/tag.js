@@ -61,14 +61,11 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
   let tagName;
   const tagId = window.location.search.substr(7);
 
-  $(document).on('ready', () => {
-    (function () {
       const n = new Date();
       const y = n.getFullYear();
       const m = n.getMonth() + 1;
       const d = n.getDate();
       $('#date').text(`${m}/${d}/${y}`);
-    })();
 
     $.getJSON('/token').then((loginStatus) => {
       if (!loginStatus) {
@@ -87,7 +84,6 @@ wrap-iife, no-shadow, no-unused-vars, strict, no-mixed-operators, handle-callbac
         });
       }
     });
-  });
 
   $('form#new-task').submit((event) => {
     event.preventDefault();
