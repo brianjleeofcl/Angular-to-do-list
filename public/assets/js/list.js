@@ -73,34 +73,34 @@
   };
 
     // eslint-disable-next-line func-names, wrap-iife
-      const n = new Date();
-      const y = n.getFullYear();
-      const m = n.getMonth() + 1;
-      const d = n.getDate();
-      $('#date').text(`${m}/${d}/${y}`);
+  const n = new Date();
+  const y = n.getFullYear();
+  const m = n.getMonth() + 1;
+  const d = n.getDate();
+  $('#date').text(`${m}/${d}/${y}`);
 
-    if (view === 'completed') {
-      $('#all').hide();
-    }
+  if (view === 'completed') {
+    $('#all').hide();
+  }
 
-    $.getJSON('/token').then((loginStatus) => {
-      if (!loginStatus) {
-        window.location.href = '/index.html';
-      } else {
-        jQuery.when($.getJSON('/list'), $.getJSON('/tags'))
-          .then((list, tags) => {
-          window.tagData = { data: tags[0] }
-          window.matAutocomplete = { data: {} };
+  $.getJSON('/token').then((loginStatus) => {
+    if (!loginStatus) {
+      window.location.href = '/index.html';
+    } else {
+      jQuery.when($.getJSON('/list'), $.getJSON('/tags'))
+        .then((list, tags) => {
+        window.tagData = { data: tags[0] }
+        window.matAutocomplete = { data: {} };
 
-          for (const tag in tagData.data) {
-            window.matAutocomplete.data[tag] = null;
-          }
+        for (const tag in tagData.data) {
+          window.matAutocomplete.data[tag] = null;
+        }
           createCollection(list[0]);
         }, (err) => {
           console.log(err);
         });
-      }
-    });
+    }
+  });
 
 
   const clearTask = () => $('#task-input[type=text], textarea').val('');
