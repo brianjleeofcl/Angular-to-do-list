@@ -27,9 +27,26 @@ const auth = function (req, res, next) {
 };
 
 router.get('/list', auth, (req, res, next) => {
-  knex('tasks').select('id', 'user_id', 'task_name', 'completed_at')
-    .where('tasks.user_id', req.claim.userId).orderBy('completed_at', 'DESC')
-    .then((array) => {
+  const id = req.claim.userId;
+
+  Promise.all([
+    knex('users_tags')
+      .innerJoin('tasks_tags', 'tasks_tags.tag_id', 'users_tags.tag_id')
+      .innerJoin('tasks', 'tasks_tags.task_id', 'tasks.id')
+      .where('users_tags.user_id', id)
+      .select('tasks.id', 'tasks.user_id', 'task_name', 'completed_at'),
+    knex('tasks').select('id', 'user_id', 'task_name', 'completed_at')
+      .where('tasks.user_id', req.claim.userId).orderBy('completed_at', 'DESC')
+  ]).then((data) => {
+      const flattened = [].concat(...data);
+      const array = [];
+      const key = [];
+      for (const obj of flattened) {
+        if (!key.includes(obj.id)) {
+          array.push(obj);
+          key.push(obj.id);
+        }
+      }
       const promises = camelizeKeys(array).map(obj => knex('tasks_tags')
           .innerJoin('tags', 'tasks_tags.tag_id', 'tags.id')
           .where('tasks_tags.task_id', obj.id)
