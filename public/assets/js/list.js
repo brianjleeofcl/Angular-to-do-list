@@ -71,15 +71,12 @@
     displayProgress(array.length, completed.length);
   };
 
-  $(document).on('ready', () => {
     // eslint-disable-next-line func-names, wrap-iife
-    (function () {
       const n = new Date();
       const y = n.getFullYear();
       const m = n.getMonth() + 1;
       const d = n.getDate();
       $('#date').text(`${m}/${d}/${y}`);
-    })();
 
     if (view === 'completed') {
       $('#all').hide();
@@ -103,7 +100,7 @@
         });
       }
     });
-  });
+
 
   const clearTask = () => $('#task-input[type=text], textarea').val('');
 
