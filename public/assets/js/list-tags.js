@@ -55,7 +55,7 @@
     clearInput();
   });
 
-  $('body').on('click', '.chip .close', (event) => {
+  $('body').on('click', '.chip.ajax-del .close', (event) => {
     const taskId = $(event.target).parent().attr('data-task');
     const tagId = $(event.target).parent().attr('data-tag');
     const data = JSON.stringify({ taskId, tagId });
@@ -69,7 +69,7 @@
     };
 
     $.ajax(option).then(() => {
-      console.log('deleted!');
+      Materialize.toast('Deleted', 750);
     }, (err) => {
       console.log(err);
     });

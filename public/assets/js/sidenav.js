@@ -96,7 +96,7 @@ no-script-url, no-shadow, no-unused-vars, strict */
       if ($('nav').length) {
         $('nav').remove();
       }
-      console.log(data);
+      
       $('body').prepend($createNav(data));
       $('.button-collapse').sideNav({
         closeOnclick: true,
@@ -117,7 +117,7 @@ no-script-url, no-shadow, no-unused-vars, strict */
         $.ajax(options).then(() => {
           window.location.href = '/index.html';
         }, () => {
-          console.log('Unable to log out. Please try again.');
+          Materialize.toast('Unable to log out. Please try again.', 500);
         });
       });
     }, err => err);

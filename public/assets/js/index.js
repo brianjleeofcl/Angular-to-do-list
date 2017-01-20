@@ -46,8 +46,6 @@
             data[dom.id] = dom.value;
           });
 
-          console.log(data);
-
           const request = {
             contentType: 'application/json',
             method: 'POST',

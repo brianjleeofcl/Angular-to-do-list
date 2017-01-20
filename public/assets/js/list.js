@@ -9,7 +9,7 @@
 
   // eslint-disable-next-line func-names
   const createTag = function (tagName, taskId) {
-    const $tag = $('<div>').text(tagName).addClass('chip right')
+    const $tag = $('<div>').text(tagName).addClass('chip right ajax-del')
       .attr({
         'data-tag': window.tagData.data[tagName] || window.tagData.data[`${tagName}-shared`],
         'data-task': taskId
@@ -23,6 +23,7 @@
   const createCollectionItem = function (object, checked) {
     const id = `item${object.id}`;
     const $li = $('<li>').addClass('collection-item');
+    const $row = $('<div>').addClass('row');
     const $input = $('<input>').attr({ type: 'checkbox', checked, id });
     const $label = $('<label>').attr('for', id).text(object.taskName);
     const $editIcon = $('<i>')
@@ -33,10 +34,16 @@
       $target.append(createTag(str, object.id));
 
       return $target;
-    }, $('<div>').addClass('row'));
+    }, $('<div>').addClass('row tag-row'));
 
-    $li.append($input, $label, $editIcon, $closeIcon, $tags);
+    $row.append($input, $label, $editIcon, $closeIcon)
+    $li.append($row, $tags);
 
+    if (object.email) {
+      const $p = $('<p>').text(`Shared task, created by ${object.email}`);
+
+      $p.appendTo($li);
+    }
 
     if (checked) {
       const time = moment(object.completedAt).local().calendar();

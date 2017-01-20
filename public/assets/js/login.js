@@ -8,7 +8,6 @@ no-undef */
 
   $.getJSON('/token')
     .then((loginStatus) => {
-      console.log(loginStatus);
       if (loginStatus) {
         window.location.href = '/list.html';
       } else {
