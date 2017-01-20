@@ -121,11 +121,10 @@ router.patch('/list', auth, (req, res, next) => {
     if (!array.length) {
       throw boom.notFound();
     } else {
-      const row = {
-        taskName: req.body.taskName || array[0].taskName,
-        completedAt: req.body.completedAt || array[0].completedAt,
-        updatedAt: new Date(),
-      };
+      const taskName = req.body.taskName || array[0].taskName;
+      const completedAt = req.body.completedAt !== undefined ? req.body.completedAt : array[0].taskName;
+
+      const row = { taskName, completedAt, updatedAt: new Date() };
 
       return knex('tasks').where('id', id).update(decamelizeKeys(row), '*');
     }
@@ -135,7 +134,7 @@ router.patch('/list', auth, (req, res, next) => {
     patchedTask = camelizeKeys(array[0]);
 
     if (!tags.length) {
-      return res.send(patchedTask);
+      return [];
     }
 
     tagIds = tagIds.concat(tags.filter((str) => str.match(/\d+/)));
@@ -155,11 +154,11 @@ router.patch('/list', auth, (req, res, next) => {
   .then((arr) => {
     tagIds = tagIds.concat(arr)
 
-    const rows = decamelizeKeys(tagIds.map(tagId => {
+    const rows = tagIds.map(tagId => {
       return { tagId, taskId: patchedTask.id }
-    }));
+    });
 
-    return knex('tasks_tags').insert(rows, '*');
+    return knex('tasks_tags').insert(decamelizeKeys(rows), '*');
   })
   .then(() => {
     res.send(camelizeKeys(patchedTask));
