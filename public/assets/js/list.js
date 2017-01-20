@@ -177,7 +177,7 @@
     const $target = $(event.target).siblings('label');
     const label = $target.text();
     const $form = $('<form>').addClass('edit row patch')
-    const $button = $('<button>').attr('type', 'submit').addClass('btn').text('save');
+    const $button = $('<button>').attr('type', 'submit').addClass('btn-flat').text('save');
     const $wide = $('<div>').addClass('col s10');
     const $narrow = $('<div>').addClass('col s2');
     const $input = $('<input>').attr({ type: 'text', id }).val(label);
@@ -245,7 +245,9 @@
     };
     $.ajax(option).then(() => $.getJSON('/list'))
       .then((data) => {
-
+        $('#all ul.collection').remove();
+        $('#completed ul.collection').remove();
+        createCollection(data);
       }, (err) => {
         // eslint-disable-next-line no-console
         console.log(err);
