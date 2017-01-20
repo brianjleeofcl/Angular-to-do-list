@@ -3,6 +3,14 @@ html, body
   height: 100%;
 }
 
+html {
+  background: url(background1.png) no-repeat center center fixed; 
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
 html
 {
   display: table;
