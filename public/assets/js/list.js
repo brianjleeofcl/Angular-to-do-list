@@ -29,13 +29,14 @@
       .addClass('material-icons right editButton').text('edit');
     const $closeIcon = $('<i>')
       .addClass('material-icons right closeIcon').text('close');
-
-    $li.append($input, $label, $editIcon, $closeIcon);
-    object.tags.reduce(($target, str) => {
+    const $tags = object.tags.reduce(($target, str) => {
       $target.append(createTag(str, object.id));
 
       return $target;
-    }, $li);
+    }, $('<div>').addClass('row'));
+
+    $li.append($input, $label, $editIcon, $closeIcon, $tags);
+
 
     if (checked) {
       const time = moment(object.completedAt).local().calendar();
@@ -177,12 +178,14 @@
     const $target = $(event.target).siblings('label');
     const label = $target.text();
     const $form = $('<form>').addClass('edit row patch')
-    const $button = $('<button>').attr('type', 'submit').addClass('btn-flat').text('save');
+    const $button = $('<button>').attr('type', 'submit').addClass('btn-small btn-floating blue darken-2');
+    const $icon = $('<i>').addClass('material-icons').text('add');
     const $wide = $('<div>').addClass('col s10');
     const $narrow = $('<div>').addClass('col s2');
     const $input = $('<input>').attr({ type: 'text', id }).val(label);
     const $addTag = $('<a>').addClass('tag-field edit').text('Click to add tags');
 
+    $button.append($icon)
     $wide.append($input);
     $narrow.append($button);
     $form.append($wide, $narrow);

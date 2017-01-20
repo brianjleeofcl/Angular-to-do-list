@@ -20,7 +20,8 @@
       type: 'text',
       placeholder: 'tag:',
     }).addClass('autocomplete new-tag-field');
-    const $button = $('<button>').attr('type', 'submit').addClass('btn edit').text('add tag');
+    const $button = $('<button>').attr('type', 'submit').addClass('btn-small btn-floating blue darken-2 edit');
+    const $icon = $('<i>').addClass('material-icons').text('label_outline');
     const $wide = $('<div>').addClass('col s10');
     const $narrow = $('<div>').addClass('col s2');
     const $container = $('<div>').addClass('new-tags col s12');
@@ -29,6 +30,7 @@
       $form.addClass('edit')
     }
 
+    $button.append($icon)
     $wide.append($field);
     $narrow.append($button);
     $form.append($wide, $narrow, $container);
