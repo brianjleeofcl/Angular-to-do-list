@@ -67,7 +67,6 @@
     };
 
     $.ajax(option).then(() => {
-      console.log('deleted!');
     }, (err) => {
       console.log(err);
     });
