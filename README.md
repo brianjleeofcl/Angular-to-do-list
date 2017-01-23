@@ -60,7 +60,9 @@ Completed tasks can be removed by clicking the 'Clear' button. This action will 
 
 ### Side navigation
 
-![Side-nav](/readme/sidenav.png)The side navigation—accessible on mobile by clicking the icon top-left side of the page or swiping in from the left—lets the user change the view of the list accordingly.
+| | |
+|---|---|
+|![Side-nav](/readme/sidenav.png) | The side navigation—accessible on mobile by clicking the icon top-left side of the page or swiping in from the left—lets the user change the view of the list accordingly.|
 
 - All items: (main) view of all tasks
 - Completed: view of all completed tasks
