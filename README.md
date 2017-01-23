@@ -1,6 +1,6 @@
 # Remembify
 #### Galvanize: Web Development Immersive - Quarter 2 Project
-#### Developers: Brian Lee, Michael Friedman
+#### Developers: [Brian Lee](https://www.brianjlee.net), [Michael Friedman](http://michaeldavidfriedman.com)
 
 ## Description
 
@@ -10,7 +10,7 @@
 
 ### Sign-up and logging in
 
-Users can register
+Users can register by submitting the requested information.
 
 ![Sign-up page](/readme/signup.png)
 
@@ -52,13 +52,16 @@ You may edit one task at a time; clicking on the edit icon of a different task w
 
 When a task is complete, you can mark it by checking the checkbox next to each task. The task will be moved from your list down to the completed list.
 
+![Completing tasks](/readme/completetask.gif)
+
 Unchecking the checked list will return the task back to your to-do list.
 
 Completed tasks can be removed by clicking the 'Clear' button. This action will remove the completed tasks permanently.
 
-##### Side navigation
+### Side navigation
 
-The side navigation—accessible on mobile by clicking the icon top-left side of the page or swiping in from the left—lets the user change the view of the list accordingly.
+![Side-nav](/readme/sidenav.png)The side navigation—accessible on mobile by clicking the icon top-left side of the page or swiping in from the left—lets the user change the view of the list accordingly.
+
 - All items: (main) view of all tasks
 - Completed: view of all completed tasks
 - Private tags: toggles the dropdown list containing unshared tags
@@ -77,8 +80,17 @@ New tasks added from individual tag pages will have the associated tag attached 
 
 ### Shared tags
 
+Shared tags are created specially in order to share tasks with other registered users. All users with access to shared tags can add and edit tasks associated with the tags.
+
+Tasks belonging to shared tags will also show up in the main list regardless of who created the task—those created by other users will display the email address of the user who initially created the task.
+
+An existing tag cannot be shared.
+
 ##### Creating shared tags
 
+New shared tags can be created here. In order to share a tag with others, a user must know the email addresses of the intended users. The application will confirm whether the submitted email address belongs to a registered user.
+
+![Creating shared tag](/readme/newsharedtag.png)
 
 ## Tech
 
@@ -99,3 +111,10 @@ New tasks added from individual tag pages will have the associated tag attached 
 * 'ryansobol/materialize'
 
 ## Further Development
+
+- Address resource efficiency and scalability of database and server
+- Improve sharing mechanism, in particular provide
+  1. control over edit permissions
+  1. authorization and confirmation for sharing and
+  1. tools for coordination
+- Option to archive completed tasks in lieu of deletion
