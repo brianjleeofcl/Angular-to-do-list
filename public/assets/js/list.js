@@ -186,7 +186,7 @@
     const label = $target.text();
     const $form = $('<form>').addClass('edit row patch')
     const $button = $('<button>').attr('type', 'submit').addClass('btn-small btn-floating blue darken-2');
-    const $icon = $('<i>').addClass('material-icons').text('add');
+    const $icon = $('<i>').addClass('material-icons').text('done');
     const $wide = $('<div>').addClass('col s10');
     const $narrow = $('<div>').addClass('col s2');
     const $input = $('<input>').attr({ type: 'text', id }).val(label);

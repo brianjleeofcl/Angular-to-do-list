@@ -12,6 +12,10 @@ li p {
   margin: 0;
 }
 
+i.material-icons {
+  cursor: default;
+}
+
 div.nav-wrapper
 {
   background-color: #01579b;
