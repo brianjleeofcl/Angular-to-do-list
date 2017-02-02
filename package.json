@@ -10,7 +10,8 @@
     "knex": "knex",
     "heroku-postbuild": "knex migrate:latest",
     "nf": "nf start",
-    "nodemon": "nodemon server.js"
+    "nodemon": "nodemon server.js",
+    "start" : "gulp"
   },
   "repository": {
     "type": "git",
@@ -26,6 +27,10 @@
   },
   "homepage": "https://github.com/efresso/title#readme",
   "dependencies": {
+    "angular": "^1.6.1",
+    "angular-messages": "^1.6.1",
+    "angular-moment": "^1.0.1",
+    "angular-ui-router": "1.0.0-beta.3",
     "bcrypt-as-promised": "^1.1.0",
     "body-parser": "^1.15.2",
     "boom": "^4.2.0",
@@ -33,18 +38,20 @@
     "dotenv": "^4.0.0",
     "express": "^4.14.0",
     "express-validation": "^1.0.1",
-    "foreman": "^2.0.0",
+    "gulp": "^3.9.1",
     "humps": "^2.0.0",
     "joi": "^9.2.0",
     "jsonwebtoken": "^7.2.1",
     "knex": "^0.12.6",
+    "moment": "^2.17.1",
     "morgan": "^1.7.0",
     "pg": "^6.1.2"
   },
   "devDependencies": {
+    "browser-sync": "^2.18.7",
     "dotenv": "^4.0.0",
     "eslint": "^3.13.1",
     "eslint-config-airbnb": "^14.0.0",
-    "nodemon": "^1.11.0"
+    "gulp-nodemon": "^2.2.1"
   }
 }
