@@ -3,23 +3,15 @@
 'use strict';
 
 const knex = require('../knex');
-
 const bcrypt = require('bcrypt-as-promised');
-
 const jwt = require('jsonwebtoken');
-
 const boom = require('boom');
-
 const { camelizeKeys, decamelizeKeys } = require('humps');
-
 const express = require('express');
-
 const ev = require('express-validation');
-
 const validations = require('../validations/users');
 
 const router = express.Router();
-
 const app = express();
 
 // eslint-disable-next-line consistent-return
@@ -34,6 +26,13 @@ const auth = function (req, res, next) {
     next();
   });
 };
+
+router.get('/users', auth, (req, res, next) => {
+  knex('users').where('id', req.claim.userId).then((array) => {
+    const { name, email, phone } = camelizeKeys(array[0])
+    res.send({ name, email, phone })
+  })
+})
 
 router.get('/users/check?', auth, (req, res, next) => {
   knex('users').where('email', req.query.email).then((array) => {

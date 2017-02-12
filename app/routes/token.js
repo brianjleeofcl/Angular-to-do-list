@@ -3,24 +3,15 @@
 'use strict';
 
 const knex = require('../knex');
-
 const bcrypt = require('bcrypt-as-promised');
-
 const jwt = require('jsonwebtoken');
-
 const { camelizeKeys } = require('humps');
-
-const express = require('express');
-
-const router = express.Router();
-
 const boom = require('boom');
-
 const ev = require('express-validation');
-
 const validations = require('../validations/users');
 
-const app = express();
+const express = require('express');
+const router = express.Router();
 
 router.get('/token', (req, res) => {
   jwt.verify(req.cookies.token, process.env.JWT_KEY, (err) => {
@@ -69,23 +60,6 @@ router.post('/token', (req, res, next) => {
     throw new Error('bad password');
   })
   .catch(err => next(err));
-});
-
-// eslint-disable-next-line consistent-return
-app.use((err, _req, res, _next) => {
-  if (err.status) {
-    return res.status(err.status).send(err);
-  }
-
-  if (err.output && err.output.statusCode) {
-    return res
-      .status(err.output.statusCode)
-      .set('Content-Type', 'text/plain')
-      .send(err.message);
-  }
-  // eslint-disable-next-line no-console
-  console.error(err.stack);
-  res.sendStatus(500);
 });
 
 router.delete('/token', (req, res, next) => {

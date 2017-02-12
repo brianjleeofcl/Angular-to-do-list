@@ -1,0 +1,22 @@
+<div layout="column" layout-align="center center" class="full-height">
+  <img src="http://i.imgur.com/qxNqBR8.png" alt="logo">
+  <p>Remembify</p>
+  <form novalidate name="$ctrl.form" layout="column" layout-align="center center" ng-submit="$ctrl.login($event,$ctrl.user)">
+    <div>
+      <i class="material-icons">email</i>
+      <md-input-container>
+        <input ng-model="$ctrl.user.email" name="email" type="text">
+        <label for="email">Email</label>
+      </md-input-container>
+    </div>
+    <div>
+      <i class="material-icons">lock_outline</i>
+      <md-input-container>
+        <input ng-model="$ctrl.user.password" name="password" type="password">
+        <label for="password">Password</label>
+      </md-input-container>
+    </div>
+    <button type="submit" md-button class="md-raised md-primary">Login</button>
+  </form>
+  <p>Need an account? <a ui-sref="signup">Signup</a></p>
+</div>

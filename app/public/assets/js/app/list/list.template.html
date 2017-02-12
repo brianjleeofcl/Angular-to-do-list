@@ -1,0 +1,13 @@
+<md-content layout="column" layout-align="start center">
+  <md-list class="list-width">
+    <md-toolbar>
+      <div class="md-tool-bar-tools md-display-1">
+        {{$ctrl.data.tagName || 'All tasks'}}
+      </div>
+    </md-toolbar>
+    <new-task></new-task>
+    <task ng-repeat="task in $ctrl.tasks | filter:{completedAt:null}" task-id="task.id" task-name="task.taskName" tags="task.tags" complete="$ctrl.complete(task)"></task>
+
+  </md-list>
+</md-content>
+<completed-list tasks="$ctrl.tasks"></completed-list>

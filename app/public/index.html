@@ -1,72 +1,46 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="app">
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta charset="utf-8">
-    <title>Todo MVC Sign-Up</title>
-    <script defer src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
-    <script defer src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/js/materialize.min.js"></script>
-    <script defer src="assets/js/index.js" charset="utf-8"></script>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.8/css/materialize.min.css">
+    <title>Todo</title>
+    <base href="/">
+
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,400italic">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-      rel="stylesheet">
-    <link href="assets/index.css" rel="stylesheet">
+    rel="stylesheet">
+    <link rel="stylesheet" href="/assets/angular-material.css">
+    <link href="/assets/index.css" rel="stylesheet">
+
+    <script defer src="/assets/js/angular.min.js" charset="utf-8"></script>
+    <script defer src="/assets/js/angular-messages.min.js" charset="utf-8"></script>
+    <script defer src="/assets/js/angular-ui-router.min.js" charset="utf-8"></script>
+    <script defer src="/assets/js/moment.js" charset="utf-8"></script>
+    <script defer src="/assets/js/angular-moment.min.js" charset="utf-8"></script>
+
+    <script defer src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-animate.min.js"></script>
+    <script defer src="http://ajax.googleapis.com/ajax/libs/angularjs/1.6.1/angular-aria.min.js"></script>
+    <script defer src="http://ajax.googleapis.com/ajax/libs/angular_material/1.1.0/angular-material.min.js"></script>
+
+    <script defer src="/assets/js/app/app.module.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/app.config.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/user/authenticate.service.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/user/user.service.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/user/login.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/user/signup.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/navigation.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/list.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/list-tag.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/sidenav.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/task.service.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/tag.service.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/task.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/new-task.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/new-tags.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/completed-list.component.js" charset="utf-8"></script>
+    <script defer src="/assets/js/app/list/completed-task.component.js" charset="utf-8"></script>
   </head>
-  <body class="">
-    <div class="row">
-      <div class="col s12 z-depth-9 card-panel">
-        <form class="signup-form">
-          <div class="row">
-            <div class="input-field col s12 center">
-              <img src="http://i.imgur.com/qxNqBR8.png" alt="logo" class="responsive-img valign profile-image-login">
-              <p class="center login-form-text">Remembify</p>
-            </div>
-          </div>
-          <div class="row margin">
-            <div class="input-field col s12">
-              <i class="material-icons prefix">face</i>
-              <input id="name" type="text" class="validate">
-              <label for="name" class="center-align">Full Name</label>
-            </div>
-          </div>
-          <div class="row margin">
-            <div class="input-field col s12">
-              <i class="material-icons prefix">phone</i>
-              <input id="phone" type="text" class="validate">
-              <label for="phone" class="center-align">Phone Number</label>
-            </div>
-          </div>
-          <div class="row margin">
-            <div class="input-field col s12">
-              <i class="material-icons prefix">email</i>
-              <input id="email" type="text" class="validate">
-              <label for="email" class="center-align">Email</label>
-            </div>
-          </div>
-          <div class="row margin">
-            <div class="input-field col s12">
-              <i class="material-icons prefix">lock_outline</i>
-              <input id="password" type="password" class="validate">
-              <label for="password" class="center-align">Password</label>
-            </div>
-          </div>
-          <div class="row margin">
-            <div class="input-field col s12">
-              <i class="material-icons prefix">lock</i>
-              <input id="password_verify" type="password" class="validate">
-              <label for="password_verify" class="center-align">Confirm Password</label>
-            </div>
-          </div>
-          <div class="row">
-            <div class="input-field col s12">
-              <button href="" class="btn waves-effect waves-light col s12">Signup</button>
-            </div>
-            <div class="input-field col s12">
-              <p class="margin center medium-small sign-up">Already registered? <a href="login.html">Login</a></p>
-            </div>
-          </div>
-        </form>
-      </div>
-    </div>
+  <body>
+    <ui-view></ui-view>
   </body>
 </html>

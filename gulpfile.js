@@ -15,6 +15,7 @@ gulp.task('browser-sync', ['nodemon'], function() {
 })
 
 gulp.task('nodemon', function (cb) {
+  let started = false;
 
   return nodemon({
     script: './app/bin/www',
@@ -25,6 +26,9 @@ gulp.task('nodemon', function (cb) {
       'node_modules/'
     ],
   }).on('start', function () {
-        setTimeout(cb, 500)
+    if (!started) {
+      setTimeout(cb, 1000)
+      started = true
+    }
   })
 })

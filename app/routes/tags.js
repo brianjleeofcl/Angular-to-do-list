@@ -3,15 +3,11 @@
 'use strict';
 
 const knex = require('../knex');
-
 const jwt = require('jsonwebtoken');
-
 const boom = require('boom');
-
 const { camelizeKeys, decamelizeKeys } = require('humps');
 
 const express = require('express');
-
 const router = express.Router();
 
 const auth = function (req, res, next) {
@@ -27,36 +23,33 @@ const auth = function (req, res, next) {
 };
 
 router.get('/tags', auth, (req, res, next) => {
-  let tags = {};
+  const tags = [];
 
   knex.select('tag_name', 'shared', 'id').from('tags').where('user_id', req.claim.userId)
     .then((array) => {
-      tags = camelizeKeys(array).reduce((acc, obj) => {
-        const name = obj.shared ? `${obj.tagName}-shared` : obj.tagName;
-        acc[name] = obj.id;
-
-        return acc;
-      }, tags);
+      tags.push(...camelizeKeys(array))
 
       return knex('users_tags')
         .innerJoin('tags', 'users_tags.tag_id', 'tags.id')
         .where('users_tags.user_id', req.claim.userId)
         .select('tag_name', 'tags.id');
     }).then((array) => {
-      tags = camelizeKeys(array).reduce((acc, obj) => {
-        acc[`${obj.tagName}-shared`] = obj.id;
-
-        return acc;
-      }, tags);
+      const ids = tags.map(obj => obj.id)
+      for (const obj of camelizeKeys(array)) {
+        if (!ids.includes(obj.id)) {
+          obj.shared = true
+          tags.push(obj)
+        }
+      }
 
       res.send(tags);
     })
   .catch(err => next(err));
 });
 
-router.get('/tags-id?', auth, (req, res, next) => {
+router.get('/tag/:id', auth, (req, res, next) => {
   const userId = req.claim.userId;
-  const tagId = req.query.tagId;
+  const tagId = req.params.id;
   let tagName;
 
   knex('tags').where('id', tagId).where('user_id', userId)

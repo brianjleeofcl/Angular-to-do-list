@@ -28,18 +28,21 @@ const tags = require('./routes/tags');
 const shared = require('./routes/shared');
 
 
-app.use(token);
-app.use(users);
+app.use(express.static(path.join(__dirname, 'public')))
 
-app.use(sidenav);
-app.use(list);
-app.use(tags);
-app.use(shared);
+app.use('/api', token);
+app.use('/api', users);
+
+app.use('/api', sidenav);
+app.use('/api', list);
+app.use('/api', tags);
+app.use('/api', shared);
+app.use('/api', require('./routes/task'))
 
 app.use('*', function(req, res, next) {
   res.sendFile('index.html', {root: path.join(__dirname, 'public')})
 });
-// eslint-disable-next-line max-params
+
 app.use((err, _req, res, _next) => {
   if (err.output && err.output.statusCode) {
     return res
@@ -48,7 +51,6 @@ app.use((err, _req, res, _next) => {
       .send(err.message);
   }
 
-  // eslint-disable-next-line no-console
   console.error(err.stack);
   res.sendStatus(500);
 });

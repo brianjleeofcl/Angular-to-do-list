@@ -1,0 +1,18 @@
+<md-list-item>
+  <form>
+    <md-input-container>
+      <label for="taskName">task</label>
+      <input ng-model="$ctrl.task.taskName" type="text" name="taskName">
+    </md-input-container>
+    <button md-button type="submit" class="md-fab md-mini md-primary">
+      <md-icon md-font-set="material-icons">add</md-icon>
+    </button>
+  </form>
+  <div>
+    <a href="#" ng-click="$ctrl.toggleTagField()">Add tags</a>
+    <new-tags ng-if="$ctrl.tagFieldVisible" tags="$ctrl.task.tags"></new-tags>
+  </div>
+  <p>
+    {{$ctrl.task}}
+  </p>
+</md-list-item>

@@ -1,0 +1,61 @@
+<section layout="row" layout-align="stretch" class="full-height">
+  <md-sidenav class="md-sidenav-left" md-is-locked-open="$mdMedia('lg')" md-whiteframe="6" md-component-id="sidenav-left" layout="column">
+
+    <md-toolbar class="md-tall">
+      <span flex></span>
+      <h3 class="md-toolbar-tools" layout="column" layout-align="center start">
+        {{ $ctrl.user.name }}
+      </h3>
+    </md-toolbar>
+    <md-list layout="column">
+      <md-list-item class="md-2-line">
+        <div class="md-list-item-text">
+          <p>{{ $ctrl.user.email }}</p>
+          <p>{{ $ctrl.user.phone }}</p>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-list-item ui-sref="list">
+        <div class="md-list-item-text">
+          <a>Main list</a>
+        </div>
+      </md-list-item>
+      <md-list-item ui-sref="completed">
+        <div class="md-list-item-text">
+          <a>Completed</a>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-subheader ng-click="null">
+        <div class="md-list-item-text">
+          <a>private tags</a>
+        </div>
+      </md-subheader>
+      <md-list-item ng-repeat="tag in $ctrl.tags|filter:{shared:false}" ui-sref="tag({id:tag.id})">
+        <div class="md-list-item-text">
+          <a>{{tag.tagName}}</a>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <md-subheader ng-click="null">
+        <div class="md-list-item-text">
+          <a>shared tags</a>
+        </div>
+      </md-subheader>
+      <md-list-item ng-repeat="tag in $ctrl.tags|filter:{shared:true}" ui-sref="tag({id:tag.id})">
+        <div class="md-list-item-text">
+          <a>{{tag.tagName}}</a>
+        </div>
+      </md-list-item>
+      <md-divider></md-divider>
+      <div flex></div>
+      <md-list-item ng-click="$ctrl.logout()">
+        <div class="md-list-item-text">
+          <a>log out</a>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-sidenav>
+
+  <ui-view flex></ui-view>
+</section>
